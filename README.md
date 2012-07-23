@@ -1,4 +1,4 @@
 vui
 ===
 
-vui js/css library
+vui library
