@@ -1,0 +1,314 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/**
+<span class='line'>  2</span>  * hashchange
+<span class='line'>  3</span>  * @example $.cookie('the_cookie');
+<span class='line'>  4</span>  * @from jQuery hashchange event - v1.3 http://benalman.com/projects/jquery-hashchange-plugin/
+<span class='line'>  5</span>  */</span><span class="WHIT">
+<span class='line'>  6</span> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">jQuery</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">window</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">document</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>  7</span> </span><span class="WHIT">  </span><span class="WHIT">
+<span class='line'>  8</span> </span><span class="WHIT">  </span><span class="COMM">// Reused string.</span><span class="WHIT">
+<span class='line'>  9</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">str_hashchange</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'hashchange'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 10</span> </span><span class="WHIT">    </span><span class="WHIT">
+<span class='line'> 11</span> </span><span class="WHIT">    </span><span class="COMM">// Method / object references.</span><span class="WHIT">
+<span class='line'> 12</span> </span><span class="WHIT">    </span><span class="NAME">doc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">document</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="WHIT">    </span><span class="NAME">fake_onhashchange</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 14</span> </span><span class="WHIT">    </span><span class="NAME">special</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$.event.special</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 15</span> </span><span class="WHIT">    </span><span class="WHIT">
+<span class='line'> 16</span> </span><span class="WHIT">    </span><span class="COMM">// Does the browser support window.onhashchange? Note that IE8 running in</span><span class="WHIT">
+<span class='line'> 17</span> </span><span class="WHIT">    </span><span class="COMM">// IE7 compatibility mode reports true for 'onhashchange' in window, even</span><span class="WHIT">
+<span class='line'> 18</span> </span><span class="WHIT">    </span><span class="COMM">// though the event isn't supported, so also test document.documentMode.</span><span class="WHIT">
+<span class='line'> 19</span> </span><span class="WHIT">    </span><span class="NAME">doc_mode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">doc.documentMode</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 20</span> </span><span class="WHIT">    </span><span class="NAME">supports_onhashchange</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'on'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">str_hashchange</span><span class="WHIT"> </span><span class="KEYW">in</span><span class="WHIT"> </span><span class="NAME">window</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">doc_mode</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">undefined</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">doc_mode</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">7</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 21</span> </span><span class="WHIT">  </span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="WHIT">  </span><span class="COMM">// Get location.hash (or what you'd expect location.hash to be) sans any</span><span class="WHIT">
+<span class='line'> 23</span> </span><span class="WHIT">  </span><span class="COMM">// leading #. Thanks for making this necessary, Firefox!</span><span class="WHIT">
+<span class='line'> 24</span> </span><span class="WHIT">  </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">get_fragment</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">url</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="WHIT">    </span><span class="NAME">url</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">url</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">location.href</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="STRN">'#'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">url.replace</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="REGX">/^[^#]*#?(.*)$/</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'$1'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="WHIT">  </span><span class="WHIT">
+<span class='line'> 29</span> </span><span class="WHIT">  </span><span class="COMM">// Method: jQuery.fn.hashchange</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="WHIT">  </span><span class="COMM">// Bind a handler to the window.onhashchange event or trigger all bound</span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="WHIT">  </span><span class="COMM">// window.onhashchange event handlers. This behavior is consistent with</span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="WHIT">  </span><span class="COMM">// jQuery's built-in event handlers.</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="WHIT">  </span><span class="COMM">// Usage:</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">  </span><span class="COMM">// > jQuery(window).hashchange( [ handler ] );</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="WHIT">  </span><span class="COMM">// Arguments:</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'> 41</span> </span><span class="WHIT">  </span><span class="COMM">//  handler - (Function) Optional handler to be bound to the hashchange</span><span class="WHIT">
+<span class='line'> 42</span> </span><span class="WHIT">  </span><span class="COMM">//    event. This is a "shortcut" for the more verbose form:</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="WHIT">  </span><span class="COMM">//    jQuery(window).bind( 'hashchange', handler ). If handler is omitted,</span><span class="WHIT">
+<span class='line'> 44</span> </span><span class="WHIT">  </span><span class="COMM">//    all bound window.onhashchange event handlers will be triggered. This</span><span class="WHIT">
+<span class='line'> 45</span> </span><span class="WHIT">  </span><span class="COMM">//    is a shortcut for the more verbose</span><span class="WHIT">
+<span class='line'> 46</span> </span><span class="WHIT">  </span><span class="COMM">//    jQuery(window).trigger( 'hashchange' ). These forms are described in</span><span class="WHIT">
+<span class='line'> 47</span> </span><span class="WHIT">  </span><span class="COMM">//    the &lt;hashchange event> section.</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'> 49</span> </span><span class="WHIT">  </span><span class="COMM">// Returns:</span><span class="WHIT">
+<span class='line'> 50</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'> 51</span> </span><span class="WHIT">  </span><span class="COMM">//  (jQuery) The initial jQuery collection of elements.</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="WHIT">  </span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="WHIT">  </span><span class="COMM">// Allow the "shortcut" format $(elem).hashchange( fn ) for binding and</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="WHIT">  </span><span class="COMM">// $(elem).hashchange() for triggering, like jQuery does for built-in events.</span><span class="WHIT">
+<span class='line'> 55</span> </span><span class="WHIT">  </span><span class="NAME">$.fn</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">str_hashchange</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">fn</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 56</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">fn</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">this.bind</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">str_hashchange</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">fn</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.trigger</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">str_hashchange</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 58</span> </span><span class="WHIT">  </span><span class="WHIT">
+<span class='line'> 59</span> </span><span class="WHIT">  </span><span class="COMM">// Property: jQuery.fn.hashchange.delay</span><span class="WHIT">
+<span class='line'> 60</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'> 61</span> </span><span class="WHIT">  </span><span class="COMM">// The numeric interval (in milliseconds) at which the &lt;hashchange event></span><span class="WHIT">
+<span class='line'> 62</span> </span><span class="WHIT">  </span><span class="COMM">// polling loop executes. Defaults to 50.</span><span class="WHIT">
+<span class='line'> 63</span> </span><span class="WHIT">  </span><span class="WHIT">
+<span class='line'> 64</span> </span><span class="WHIT">  </span><span class="COMM">// Property: jQuery.fn.hashchange.domain</span><span class="WHIT">
+<span class='line'> 65</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="WHIT">  </span><span class="COMM">// If you're setting document.domain in your JavaScript, and you want hash</span><span class="WHIT">
+<span class='line'> 67</span> </span><span class="WHIT">  </span><span class="COMM">// history to work in IE6/7, not only must this property be set, but you must</span><span class="WHIT">
+<span class='line'> 68</span> </span><span class="WHIT">  </span><span class="COMM">// also set document.domain BEFORE jQuery is loaded into the page. This</span><span class="WHIT">
+<span class='line'> 69</span> </span><span class="WHIT">  </span><span class="COMM">// property is only applicable if you are supporting IE6/7 (or IE8 operating</span><span class="WHIT">
+<span class='line'> 70</span> </span><span class="WHIT">  </span><span class="COMM">// in "IE7 compatibility" mode).</span><span class="WHIT">
+<span class='line'> 71</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'> 72</span> </span><span class="WHIT">  </span><span class="COMM">// In addition, the &lt;jQuery.fn.hashchange.src> property must be set to the</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="WHIT">  </span><span class="COMM">// path of the included "document-domain.html" file, which can be renamed or</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">  </span><span class="COMM">// modified if necessary (note that the document.domain specified must be the</span><span class="WHIT">
+<span class='line'> 75</span> </span><span class="WHIT">  </span><span class="COMM">// same in both your main JavaScript as well as in this file).</span><span class="WHIT">
+<span class='line'> 76</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'> 77</span> </span><span class="WHIT">  </span><span class="COMM">// Usage:</span><span class="WHIT">
+<span class='line'> 78</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'> 79</span> </span><span class="WHIT">  </span><span class="COMM">// jQuery.fn.hashchange.domain = document.domain;</span><span class="WHIT">
+<span class='line'> 80</span> </span><span class="WHIT">  </span><span class="WHIT">
+<span class='line'> 81</span> </span><span class="WHIT">  </span><span class="COMM">// Property: jQuery.fn.hashchange.src</span><span class="WHIT">
+<span class='line'> 82</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'> 83</span> </span><span class="WHIT">  </span><span class="COMM">// If, for some reason, you need to specify an Iframe src file (for example,</span><span class="WHIT">
+<span class='line'> 84</span> </span><span class="WHIT">  </span><span class="COMM">// when setting document.domain as in &lt;jQuery.fn.hashchange.domain>), you can</span><span class="WHIT">
+<span class='line'> 85</span> </span><span class="WHIT">  </span><span class="COMM">// do so using this property. Note that when using this property, history</span><span class="WHIT">
+<span class='line'> 86</span> </span><span class="WHIT">  </span><span class="COMM">// won't be recorded in IE6/7 until the Iframe src file loads. This property</span><span class="WHIT">
+<span class='line'> 87</span> </span><span class="WHIT">  </span><span class="COMM">// is only applicable if you are supporting IE6/7 (or IE8 operating in "IE7</span><span class="WHIT">
+<span class='line'> 88</span> </span><span class="WHIT">  </span><span class="COMM">// compatibility" mode).</span><span class="WHIT">
+<span class='line'> 89</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'> 90</span> </span><span class="WHIT">  </span><span class="COMM">// Usage:</span><span class="WHIT">
+<span class='line'> 91</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'> 92</span> </span><span class="WHIT">  </span><span class="COMM">// jQuery.fn.hashchange.src = 'path/to/file.html';</span><span class="WHIT">
+<span class='line'> 93</span> </span><span class="WHIT">  </span><span class="WHIT">
+<span class='line'> 94</span> </span><span class="WHIT">  </span><span class="NAME">$.fn</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">str_hashchange</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">delay</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">50</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 95</span> </span><span class="WHIT">  </span><span class="COMM">/*
+<span class='line'> 96</span>   $.fn[ str_hashchange ].domain = null;
+<span class='line'> 97</span>   $.fn[ str_hashchange ].src = null;
+<span class='line'> 98</span>   */</span><span class="WHIT">
+<span class='line'> 99</span> </span><span class="WHIT">  </span><span class="WHIT">
+<span class='line'>100</span> </span><span class="WHIT">  </span><span class="COMM">// Event: hashchange event</span><span class="WHIT">
+<span class='line'>101</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>102</span> </span><span class="WHIT">  </span><span class="COMM">// Fired when location.hash changes. In browsers that support it, the native</span><span class="WHIT">
+<span class='line'>103</span> </span><span class="WHIT">  </span><span class="COMM">// HTML5 window.onhashchange event is used, otherwise a polling loop is</span><span class="WHIT">
+<span class='line'>104</span> </span><span class="WHIT">  </span><span class="COMM">// initialized, running every &lt;jQuery.fn.hashchange.delay> milliseconds to</span><span class="WHIT">
+<span class='line'>105</span> </span><span class="WHIT">  </span><span class="COMM">// see if the hash has changed. In IE6/7 (and IE8 operating in "IE7</span><span class="WHIT">
+<span class='line'>106</span> </span><span class="WHIT">  </span><span class="COMM">// compatibility" mode), a hidden Iframe is created to allow the back button</span><span class="WHIT">
+<span class='line'>107</span> </span><span class="WHIT">  </span><span class="COMM">// and hash-based history to work.</span><span class="WHIT">
+<span class='line'>108</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>109</span> </span><span class="WHIT">  </span><span class="COMM">// Usage as described in &lt;jQuery.fn.hashchange>:</span><span class="WHIT">
+<span class='line'>110</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>111</span> </span><span class="WHIT">  </span><span class="COMM">// > // Bind an event handler.</span><span class="WHIT">
+<span class='line'>112</span> </span><span class="WHIT">  </span><span class="COMM">// > jQuery(window).hashchange( function(e) {</span><span class="WHIT">
+<span class='line'>113</span> </span><span class="WHIT">  </span><span class="COMM">// >   var hash = location.hash;</span><span class="WHIT">
+<span class='line'>114</span> </span><span class="WHIT">  </span><span class="COMM">// >   ...</span><span class="WHIT">
+<span class='line'>115</span> </span><span class="WHIT">  </span><span class="COMM">// > });</span><span class="WHIT">
+<span class='line'>116</span> </span><span class="WHIT">  </span><span class="COMM">// > </span><span class="WHIT">
+<span class='line'>117</span> </span><span class="WHIT">  </span><span class="COMM">// > // Manually trigger the event handler.</span><span class="WHIT">
+<span class='line'>118</span> </span><span class="WHIT">  </span><span class="COMM">// > jQuery(window).hashchange();</span><span class="WHIT">
+<span class='line'>119</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>120</span> </span><span class="WHIT">  </span><span class="COMM">// A more verbose usage that allows for event namespacing:</span><span class="WHIT">
+<span class='line'>121</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>122</span> </span><span class="WHIT">  </span><span class="COMM">// > // Bind an event handler.</span><span class="WHIT">
+<span class='line'>123</span> </span><span class="WHIT">  </span><span class="COMM">// > jQuery(window).bind( 'hashchange', function(e) {</span><span class="WHIT">
+<span class='line'>124</span> </span><span class="WHIT">  </span><span class="COMM">// >   var hash = location.hash;</span><span class="WHIT">
+<span class='line'>125</span> </span><span class="WHIT">  </span><span class="COMM">// >   ...</span><span class="WHIT">
+<span class='line'>126</span> </span><span class="WHIT">  </span><span class="COMM">// > });</span><span class="WHIT">
+<span class='line'>127</span> </span><span class="WHIT">  </span><span class="COMM">// > </span><span class="WHIT">
+<span class='line'>128</span> </span><span class="WHIT">  </span><span class="COMM">// > // Manually trigger the event handler.</span><span class="WHIT">
+<span class='line'>129</span> </span><span class="WHIT">  </span><span class="COMM">// > jQuery(window).trigger( 'hashchange' );</span><span class="WHIT">
+<span class='line'>130</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>131</span> </span><span class="WHIT">  </span><span class="COMM">// Additional Notes:</span><span class="WHIT">
+<span class='line'>132</span> </span><span class="WHIT">  </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>133</span> </span><span class="WHIT">  </span><span class="COMM">// * The polling loop and Iframe are not created until at least one handler</span><span class="WHIT">
+<span class='line'>134</span> </span><span class="WHIT">  </span><span class="COMM">//   is actually bound to the 'hashchange' event.</span><span class="WHIT">
+<span class='line'>135</span> </span><span class="WHIT">  </span><span class="COMM">// * If you need the bound handler(s) to execute immediately, in cases where</span><span class="WHIT">
+<span class='line'>136</span> </span><span class="WHIT">  </span><span class="COMM">//   a location.hash exists on page load, via bookmark or page refresh for</span><span class="WHIT">
+<span class='line'>137</span> </span><span class="WHIT">  </span><span class="COMM">//   example, use jQuery(window).hashchange() or the more verbose </span><span class="WHIT">
+<span class='line'>138</span> </span><span class="WHIT">  </span><span class="COMM">//   jQuery(window).trigger( 'hashchange' ).</span><span class="WHIT">
+<span class='line'>139</span> </span><span class="WHIT">  </span><span class="COMM">// * The event can be bound before DOM ready, but since it won't be usable</span><span class="WHIT">
+<span class='line'>140</span> </span><span class="WHIT">  </span><span class="COMM">//   before then in IE6/7 (due to the necessary Iframe), recommended usage is</span><span class="WHIT">
+<span class='line'>141</span> </span><span class="WHIT">  </span><span class="COMM">//   to bind it inside a DOM ready handler.</span><span class="WHIT">
+<span class='line'>142</span> </span><span class="WHIT">  </span><span class="WHIT">
+<span class='line'>143</span> </span><span class="WHIT">  </span><span class="COMM">// Override existing $.event.special.hashchange methods (allowing this plugin</span><span class="WHIT">
+<span class='line'>144</span> </span><span class="WHIT">  </span><span class="COMM">// to be defined after jQuery BBQ in BBQ's source code).</span><span class="WHIT">
+<span class='line'>145</span> </span><span class="WHIT">  </span><span class="NAME">special</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">str_hashchange</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$.extend</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">special</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">str_hashchange</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>146</span> </span><span class="WHIT">    </span><span class="WHIT">
+<span class='line'>147</span> </span><span class="WHIT">    </span><span class="COMM">// Called only when the first 'hashchange' event is bound to window.</span><span class="WHIT">
+<span class='line'>148</span> </span><span class="WHIT">    </span><span class="NAME">setup</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>149</span> </span><span class="WHIT">      </span><span class="COMM">// If window.onhashchange is supported natively, there's nothing to do..</span><span class="WHIT">
+<span class='line'>150</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">supports_onhashchange</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>151</span> </span><span class="WHIT">      </span><span class="WHIT">
+<span class='line'>152</span> </span><span class="WHIT">      </span><span class="COMM">// Otherwise, we need to create our own. And we don't want to call this</span><span class="WHIT">
+<span class='line'>153</span> </span><span class="WHIT">      </span><span class="COMM">// until the user binds to the event, just in case they never do, since it</span><span class="WHIT">
+<span class='line'>154</span> </span><span class="WHIT">      </span><span class="COMM">// will create a polling loop and possibly even a hidden Iframe.</span><span class="WHIT">
+<span class='line'>155</span> </span><span class="WHIT">      </span><span class="NAME">$</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">fake_onhashchange.start</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>156</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>157</span> </span><span class="WHIT">    </span><span class="WHIT">
+<span class='line'>158</span> </span><span class="WHIT">    </span><span class="COMM">// Called only when the last 'hashchange' event is unbound from window.</span><span class="WHIT">
+<span class='line'>159</span> </span><span class="WHIT">    </span><span class="NAME">teardown</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>160</span> </span><span class="WHIT">      </span><span class="COMM">// If window.onhashchange is supported natively, there's nothing to do..</span><span class="WHIT">
+<span class='line'>161</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">supports_onhashchange</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>162</span> </span><span class="WHIT">      </span><span class="WHIT">
+<span class='line'>163</span> </span><span class="WHIT">      </span><span class="COMM">// Otherwise, we need to stop ours (if possible).</span><span class="WHIT">
+<span class='line'>164</span> </span><span class="WHIT">      </span><span class="NAME">$</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">fake_onhashchange.stop</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>165</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>166</span> </span><span class="WHIT">    </span><span class="WHIT">
+<span class='line'>167</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>168</span> </span><span class="WHIT">  </span><span class="WHIT">
+<span class='line'>169</span> </span><span class="WHIT">  </span><span class="COMM">// fake_onhashchange does all the work of triggering the window.onhashchange</span><span class="WHIT">
+<span class='line'>170</span> </span><span class="WHIT">  </span><span class="COMM">// event for browsers that don't natively support it, including creating a</span><span class="WHIT">
+<span class='line'>171</span> </span><span class="WHIT">  </span><span class="COMM">// polling loop to watch for hash changes and in IE 6/7 creating a hidden</span><span class="WHIT">
+<span class='line'>172</span> </span><span class="WHIT">  </span><span class="COMM">// Iframe to enable back and forward.</span><span class="WHIT">
+<span class='line'>173</span> </span><span class="WHIT">  </span><span class="NAME">fake_onhashchange</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>174</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">self</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>175</span> </span><span class="WHIT">      </span><span class="NAME">timeout_id</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>176</span> </span><span class="WHIT">      </span><span class="WHIT">
+<span class='line'>177</span> </span><span class="WHIT">      </span><span class="COMM">// Remember the initial hash so it doesn't get triggered immediately.</span><span class="WHIT">
+<span class='line'>178</span> </span><span class="WHIT">      </span><span class="NAME">last_hash</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">get_fragment</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>179</span> </span><span class="WHIT">      </span><span class="WHIT">
+<span class='line'>180</span> </span><span class="WHIT">      </span><span class="NAME">fn_retval</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">val</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">val</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>181</span> </span><span class="WHIT">      </span><span class="NAME">history_set</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">fn_retval</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>182</span> </span><span class="WHIT">      </span><span class="NAME">history_get</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">fn_retval</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>183</span> </span><span class="WHIT">    </span><span class="WHIT">
+<span class='line'>184</span> </span><span class="WHIT">    </span><span class="COMM">// Start the polling loop.</span><span class="WHIT">
+<span class='line'>185</span> </span><span class="WHIT">    </span><span class="NAME">self.start</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>186</span> </span><span class="WHIT">      </span><span class="NAME">timeout_id</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">poll</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>187</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>188</span> </span><span class="WHIT">    </span><span class="WHIT">
+<span class='line'>189</span> </span><span class="WHIT">    </span><span class="COMM">// Stop the polling loop.</span><span class="WHIT">
+<span class='line'>190</span> </span><span class="WHIT">    </span><span class="NAME">self.stop</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>191</span> </span><span class="WHIT">      </span><span class="NAME">timeout_id</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">clearTimeout</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">timeout_id</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>192</span> </span><span class="WHIT">      </span><span class="NAME">timeout_id</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">undefined</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>193</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>194</span> </span><span class="WHIT">    </span><span class="WHIT">
+<span class='line'>195</span> </span><span class="WHIT">    </span><span class="COMM">// This polling loop checks every $.fn.hashchange.delay milliseconds to see</span><span class="WHIT">
+<span class='line'>196</span> </span><span class="WHIT">    </span><span class="COMM">// if location.hash has changed, and triggers the 'hashchange' event on</span><span class="WHIT">
+<span class='line'>197</span> </span><span class="WHIT">    </span><span class="COMM">// window when necessary.</span><span class="WHIT">
+<span class='line'>198</span> </span><span class="WHIT">    </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">poll</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>199</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">hash</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">get_fragment</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>200</span> </span><span class="WHIT">        </span><span class="NAME">history_hash</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">history_get</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">last_hash</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>201</span> </span><span class="WHIT">      </span><span class="WHIT">
+<span class='line'>202</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">hash</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="NAME">last_hash</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>203</span> </span><span class="WHIT">        </span><span class="NAME">history_set</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">last_hash</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">hash</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">history_hash</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>204</span> </span><span class="WHIT">        </span><span class="WHIT">
+<span class='line'>205</span> </span><span class="WHIT">        </span><span class="NAME">$</span><span class="PUNC">(</span><span class="NAME">window</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">trigger</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">str_hashchange</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>206</span> </span><span class="WHIT">        </span><span class="WHIT">
+<span class='line'>207</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">history_hash</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="NAME">last_hash</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>208</span> </span><span class="WHIT">        </span><span class="NAME">location.href</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">location.href.replace</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="REGX">/#.*/</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">''</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">history_hash</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>209</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>210</span> </span><span class="WHIT">      </span><span class="WHIT">
+<span class='line'>211</span> </span><span class="WHIT">      </span><span class="NAME">timeout_id</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">setTimeout</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">poll</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">$.fn</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">str_hashchange</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">delay</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>212</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>213</span> </span><span class="WHIT">    </span><span class="WHIT">
+<span class='line'>214</span> </span><span class="WHIT">    </span><span class="COMM">// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv</span><span class="WHIT">
+<span class='line'>215</span> </span><span class="WHIT">    </span><span class="COMM">// vvvvvvvvvvvvvvvvvvv REMOVE IF NOT SUPPORTING IE6/7/8 vvvvvvvvvvvvvvvvvvv</span><span class="WHIT">
+<span class='line'>216</span> </span><span class="WHIT">    </span><span class="COMM">// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv</span><span class="WHIT">
+<span class='line'>217</span> </span><span class="WHIT">    </span><span class="NAME">$.browser.msie</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">supports_onhashchange</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>218</span> </span><span class="WHIT">      </span><span class="COMM">// Not only do IE6/7 need the "magical" Iframe treatment, but so does IE8</span><span class="WHIT">
+<span class='line'>219</span> </span><span class="WHIT">      </span><span class="COMM">// when running in "IE7 compatibility" mode.</span><span class="WHIT">
+<span class='line'>220</span> </span><span class="WHIT">      </span><span class="WHIT">
+<span class='line'>221</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">iframe</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>222</span> </span><span class="WHIT">        </span><span class="NAME">iframe_src</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>223</span> </span><span class="WHIT">      </span><span class="WHIT">
+<span class='line'>224</span> </span><span class="WHIT">      </span><span class="COMM">// When the event is bound and polling starts in IE 6/7, create a hidden</span><span class="WHIT">
+<span class='line'>225</span> </span><span class="WHIT">      </span><span class="COMM">// Iframe for history handling.</span><span class="WHIT">
+<span class='line'>226</span> </span><span class="WHIT">      </span><span class="NAME">self.start</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>227</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">iframe</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>228</span> </span><span class="WHIT">          </span><span class="NAME">iframe_src</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$.fn</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">str_hashchange</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">src</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>229</span> </span><span class="WHIT">          </span><span class="NAME">iframe_src</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">iframe_src</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">iframe_src</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">get_fragment</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>230</span> </span><span class="WHIT">          </span><span class="WHIT">
+<span class='line'>231</span> </span><span class="WHIT">          </span><span class="COMM">// Create hidden Iframe. Attempt to make Iframe as hidden as possible</span><span class="WHIT">
+<span class='line'>232</span> </span><span class="WHIT">          </span><span class="COMM">// by using techniques from http://www.paciellogroup.com/blog/?p=604.</span><span class="WHIT">
+<span class='line'>233</span> </span><span class="WHIT">          </span><span class="NAME">iframe</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$</span><span class="PUNC">(</span><span class="STRN">'&lt;iframe tabindex="-1" title="empty"/>'</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">hide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>234</span> </span><span class="WHIT">            </span><span class="WHIT">
+<span class='line'>235</span> </span><span class="WHIT">            </span><span class="COMM">// When Iframe has completely loaded, initialize the history and</span><span class="WHIT">
+<span class='line'>236</span> </span><span class="WHIT">            </span><span class="COMM">// start polling.</span><span class="WHIT">
+<span class='line'>237</span> </span><span class="WHIT">            </span><span class="PUNC">.</span><span class="NAME">one</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'load'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>238</span> </span><span class="WHIT">              </span><span class="NAME">iframe_src</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">history_set</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">get_fragment</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>239</span> </span><span class="WHIT">              </span><span class="NAME">poll</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>240</span> </span><span class="WHIT">            </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>241</span> </span><span class="WHIT">            </span><span class="WHIT">
+<span class='line'>242</span> </span><span class="WHIT">            </span><span class="COMM">// Load Iframe src if specified, otherwise nothing.</span><span class="WHIT">
+<span class='line'>243</span> </span><span class="WHIT">            </span><span class="PUNC">.</span><span class="NAME">attr</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'src'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">iframe_src</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="STRN">'javascript:0'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>244</span> </span><span class="WHIT">            </span><span class="WHIT">
+<span class='line'>245</span> </span><span class="WHIT">            </span><span class="COMM">// Append Iframe after the end of the body to prevent unnecessary</span><span class="WHIT">
+<span class='line'>246</span> </span><span class="WHIT">            </span><span class="COMM">// initial page scrolling (yes, this works).</span><span class="WHIT">
+<span class='line'>247</span> </span><span class="WHIT">            </span><span class="PUNC">.</span><span class="NAME">insertAfter</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'body'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">contentWindow</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>248</span> </span><span class="WHIT">          </span><span class="WHIT">
+<span class='line'>249</span> </span><span class="WHIT">          </span><span class="COMM">// Whenever `document.title` changes, update the Iframe's title to</span><span class="WHIT">
+<span class='line'>250</span> </span><span class="WHIT">          </span><span class="COMM">// prettify the back/next history menu entries. Since IE sometimes</span><span class="WHIT">
+<span class='line'>251</span> </span><span class="WHIT">          </span><span class="COMM">// errors with "Unspecified error" the very first time this is set</span><span class="WHIT">
+<span class='line'>252</span> </span><span class="WHIT">          </span><span class="COMM">// (yes, very useful) wrap this with a try/catch block.</span><span class="WHIT">
+<span class='line'>253</span> </span><span class="WHIT">          </span><span class="NAME">doc.onpropertychange</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>254</span> </span><span class="WHIT">            </span><span class="KEYW">try</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>255</span> </span><span class="WHIT">              </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">event.propertyName</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'title'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>256</span> </span><span class="WHIT">                </span><span class="NAME">iframe.document.title</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">doc.title</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>257</span> </span><span class="WHIT">              </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>258</span> </span><span class="WHIT">            </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">catch</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>259</span> </span><span class="WHIT">          </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>260</span> </span><span class="WHIT">          </span><span class="WHIT">
+<span class='line'>261</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>262</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>263</span> </span><span class="WHIT">      </span><span class="WHIT">
+<span class='line'>264</span> </span><span class="WHIT">      </span><span class="COMM">// Override the "stop" method since an IE6/7 Iframe was created. Even</span><span class="WHIT">
+<span class='line'>265</span> </span><span class="WHIT">      </span><span class="COMM">// if there are no longer any bound event handlers, the polling loop</span><span class="WHIT">
+<span class='line'>266</span> </span><span class="WHIT">      </span><span class="COMM">// is still necessary for back/next to work at all!</span><span class="WHIT">
+<span class='line'>267</span> </span><span class="WHIT">      </span><span class="NAME">self.stop</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">fn_retval</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>268</span> </span><span class="WHIT">      </span><span class="WHIT">
+<span class='line'>269</span> </span><span class="WHIT">      </span><span class="COMM">// Get history by looking at the hidden Iframe's location.hash.</span><span class="WHIT">
+<span class='line'>270</span> </span><span class="WHIT">      </span><span class="NAME">history_get</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>271</span> </span><span class="WHIT">        </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">get_fragment</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">iframe.location.href</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>272</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>273</span> </span><span class="WHIT">      </span><span class="WHIT">
+<span class='line'>274</span> </span><span class="WHIT">      </span><span class="COMM">// Set a new history item by opening and then closing the Iframe</span><span class="WHIT">
+<span class='line'>275</span> </span><span class="WHIT">      </span><span class="COMM">// document, *then* setting its location.hash. If document.domain has</span><span class="WHIT">
+<span class='line'>276</span> </span><span class="WHIT">      </span><span class="COMM">// been set, update that as well.</span><span class="WHIT">
+<span class='line'>277</span> </span><span class="WHIT">      </span><span class="NAME">history_set</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">hash</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">history_hash</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>278</span> </span><span class="WHIT">        </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">iframe_doc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">iframe.document</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>279</span> </span><span class="WHIT">          </span><span class="NAME">domain</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$.fn</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">str_hashchange</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">domain</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>280</span> </span><span class="WHIT">        </span><span class="WHIT">
+<span class='line'>281</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">hash</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="NAME">history_hash</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>282</span> </span><span class="WHIT">          </span><span class="COMM">// Update Iframe with any initial `document.title` that might be set.</span><span class="WHIT">
+<span class='line'>283</span> </span><span class="WHIT">          </span><span class="NAME">iframe_doc.title</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">doc.title</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>284</span> </span><span class="WHIT">          </span><span class="WHIT">
+<span class='line'>285</span> </span><span class="WHIT">          </span><span class="COMM">// Opening the Iframe's document after it has been closed is what</span><span class="WHIT">
+<span class='line'>286</span> </span><span class="WHIT">          </span><span class="COMM">// actually adds a history entry.</span><span class="WHIT">
+<span class='line'>287</span> </span><span class="WHIT">          </span><span class="NAME">iframe_doc.open</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>288</span> </span><span class="WHIT">          </span><span class="WHIT">
+<span class='line'>289</span> </span><span class="WHIT">          </span><span class="COMM">// Set document.domain for the Iframe document as well, if necessary.</span><span class="WHIT">
+<span class='line'>290</span> </span><span class="WHIT">          </span><span class="NAME">domain</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">iframe_doc.write</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'&lt;script>document.domain="'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">domain</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'"&lt;/script>'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>291</span> </span><span class="WHIT">          </span><span class="WHIT">
+<span class='line'>292</span> </span><span class="WHIT">          </span><span class="NAME">iframe_doc.close</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>293</span> </span><span class="WHIT">          </span><span class="WHIT">
+<span class='line'>294</span> </span><span class="WHIT">          </span><span class="COMM">// Update the Iframe's hash, for great justice.</span><span class="WHIT">
+<span class='line'>295</span> </span><span class="WHIT">          </span><span class="NAME">iframe.location.hash</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">hash</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>296</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>297</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>298</span> </span><span class="WHIT">      </span><span class="WHIT">
+<span class='line'>299</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>300</span> </span><span class="WHIT">    </span><span class="COMM">// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span><span class="WHIT">
+<span class='line'>301</span> </span><span class="WHIT">    </span><span class="COMM">// ^^^^^^^^^^^^^^^^^^^ REMOVE IF NOT SUPPORTING IE6/7/8 ^^^^^^^^^^^^^^^^^^^</span><span class="WHIT">
+<span class='line'>302</span> </span><span class="WHIT">    </span><span class="COMM">// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span><span class="WHIT">
+<span class='line'>303</span> </span><span class="WHIT">    </span><span class="WHIT">
+<span class='line'>304</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">self</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>305</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>306</span> 
+<span class='line'>307</span> </span><span class="PUNC">}</span><span class="PUNC">(</span><span class="NAME">jQuery</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">window</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">document</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span></pre></body></html>
