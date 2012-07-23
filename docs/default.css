@@ -1,0 +1,65 @@
+
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;}
+table{border-collapse:collapse;border-spacing:0;}
+fieldset,img{border:0;}
+address,caption,cite,code,dfn,var{font-style:normal;font-weight:normal;}
+ol,ul{list-style:none;}
+caption,th{text-align:left;}
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:bold;}
+q:before,q:after{content:"";}
+abbr,acronym{border:0;}
+
+body{color:#313334;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;text-align:center;line-height:1.5;background-color:#fff;}
+a:focus{color:#000;}
+
+a:link, a:visited { color:#0078B6;text-decoration:none;}
+a:hover, a:active {text-decoration:underline; }
+
+h1,h2,h3,h4,h5,h6{color:#313334;}
+h1{font-size:2em;line-height:1;margin-bottom:0.5em;}
+h2{font-size:1.5em;margin-bottom:0.75em;}
+h3{font-size:1.2em;line-height:1;margin-bottom:1em;}
+h4{font-size:1em;height:1.25em;line-height:1.25em;margin-bottom:1.25em;}
+
+ul,ol{margin:0 1.5em 1.5em;}
+ul{list-style-type:disc;}
+ul li{list-style-image:none;list-style-position:outside;list-style-type:square;}
+ol{list-style-type:decimal;}
+em{color:#686c70;}
+hr{border:none;height:1px;overflow:hidden;border-bottom:1px solid #ddd;}
+
+#page{text-align:left;}
+
+#top{font-size:2em;text-align:center;clear:both;}
+#top a{display:block;}
+
+#nav{float:left;width:160px;padding:0 0px 15px 15px;font-size:1.1em;}
+#nav h4{border-bottom:1px solid #ddd;font-weight:bold;margin:10px 0;padding-bottom:2px;}
+#nav .title{border-bottom:1px solid #ddd;padding-bottom:10px;margin-bottom:10px;}
+
+#nav a{display:block;}
+
+#foot{margin-top:30px;text-align:center;clear:both;border-top:1px solid #ccc;padding:15px 0;}
+
+#main{margin:0 175px 0 185px;padding: 0 20px 0 20px;border-left:1px solid #ddd;border-right:1px solid #ddd;}
+#main h1{padding-bottom:0.3em;border-bottom:1px solid #ddd;font-size:1.8em;}
+#main h2{border-bottom:1px solid #ddd;}
+#main h3{margin-bottom:0.5em;padding-bottom:0.4em;}
+#main h2 .type{font-weight:normal;font-size:1em;}
+#main .extra{margin-bottom:1em;}
+
+pre{background:#FFFFFF none repeat scroll 0 0;border:1px dashed #ddd;overflow:auto;padding:10px;}
+pre,code,tt{-x-system-font:none;font-family:'andale mono','lucida console',monospace;font-size:1em;font-size-adjust:none;font-stretch:normal;font-style:normal;font-variant:normal;font-weight:normal;line-height:1.5;}
+pre,code{margin:1.5em 0;white-space:pre;}
+pre.example{margin-top:0;}
+
+.description{font-size:1.2em;margin:0 0 0.5em;}
+.description ul{font-size:0.8em;}
+.description pre{font-size:0.8em;}
+
+#summary{float: right;width: 120px;margin-right: -155px;}
+#summary a{display:block;}
+#summary b a{margin-bottom:1em;}
+
+.detailList{padding-bottom:1em}
+.detailList dt{font-weight:bold;}

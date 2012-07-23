@@ -1,0 +1,44 @@
+﻿<project name="common-build" basedir="." default="common.build">
+	<description>压缩合并vui</description>
+	<dirname property="current.dir" file="${ant.file.common-build}"/>
+	
+	<!--js源代码目录 -->
+	<property name="js.dir" location="../js/"/>
+	<!-- js压缩后的目标目录 -->
+	<property name="build.dir" location="../static/"/>
+
+	<property name="yuicompressor.jar" location="../tools/compressor/yuicompressor-2.4.7.jar"/>
+	<property name="charset" value="utf-8"/>
+	
+	<!-- 生成的js文件名 -->
+	<property name="target.filename" value="vui" />
+	<!-- 生成的js文件名(未压缩的) -->
+	<property name="target.uncomprerss.filename" value="vui_uncomprerss" />
+	
+	<!-- 核心文件名 -->
+	<property name="core.filename" value="vui" />
+
+	<!-- vui 文件合并,核心文件排在前面 vui.js合并到static文件夹中 -->
+	<target name="concatenate">
+		<echo message="start concatenate" />
+		<concat destfile="${build.dir}/${target.uncomprerss.filename}.js" encoding="${charset}" outputencoding="${charset}">  
+			<filelist dir="${js.dir}" files="${target.filename}.js" />
+			<fileset dir="${js.dir}" includes="**/*.js" excludes="${core.filename}.js" />
+		 </concat>
+		 <echo message="end concatenate" />
+	</target>
+
+	<!-- yuicompressor -->
+	<target name="yuicompressor">
+		<echo message="start yuicompressor" />
+		<java jar="${yuicompressor.jar}" fork="true" failonerror="false">
+			<arg line="--type js --charset ${charset} --preserve-semi ${build.dir}/${target.uncomprerss.filename}.js -o ${build.dir}/${target.filename}.js" />
+		</java>
+		<echo message="end yuicompressor" />
+	</target>
+
+	<!-- common.build copydir -->
+	<target name="common.build" depends="concatenate,yuicompressor">
+	</target>
+
+</project>
