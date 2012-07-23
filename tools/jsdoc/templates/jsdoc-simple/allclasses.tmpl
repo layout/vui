@@ -1,0 +1,12 @@
+<div class="title">	<strong>{+new Link().toFile("index.html").withText("Class Index")+}</strong></div>
+<for each="thisClass" in="data">
+  <if test="thisClass.isNamespace">
+    <h4>{+ thisClass.alias +}</h4>
+    <if test="thisClass.methods && thisClass.methods.length">
+      <div>{+ new Link().toClass(thisClass.alias).withText(thisClass.name) +}</div>
+    </if>
+  </if>
+  <if test="!thisClass.isNamespace">
+    <div>{+ new Link().toClass(thisClass.alias) +}</div>
+  </if>
+</for>

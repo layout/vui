@@ -1,0 +1,400 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="generator" content="JsDoc Toolkit" />
+
+<title>vui.dialog - undefined</title>
+<link rel="stylesheet" href="../default.css"/>
+</head><body>
+
+<div id="page">
+<div id="top"> vui document</div>
+<div id="nav"> <div class="title">	<strong><a href="../index.html">Class Index</a></strong></div>
+
+  
+  
+    <div><a href="../page/vui.autoscroll.html">vui.autoscroll</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.browser.html">vui.browser</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.clickhide.html">vui.clickhide</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.contextmenu.html">vui.contextmenu</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.cookie.html">vui.cookie</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.counter.html">vui.counter</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.debug.html">vui.debug</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.defaultchars.html">vui.defaultchars</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.dialog.html">vui.dialog</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.drag.html">vui.drag</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.fixed.html">vui.fixed</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.focusclass.html">vui.focusclass</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.hotkey.html">vui.hotkey</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.indexOf.html">vui.indexOf</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.inputCursor.html">vui.inputCursor</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.isScroll.html">vui.isScroll</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.log.html">vui.log</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.maxlength.html">vui.maxlength</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.menu.html">vui.menu</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.numberToArray.html">vui.numberToArray</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.pageSize.html">vui.pageSize</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.preventScroll.html">vui.preventScroll</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.selectCode.html">vui.selectCode</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.selectFileName.html">vui.selectFileName</a></div>
+  
+
+  
+  
+    <div><a href="../page/vui.stick.html">vui.stick</a></div>
+  
+
+ </div>
+<div id="main">
+
+<!-- summary -->
+<div id="summary">
+    <!-- Class Name -->
+     
+	<b><a href="../page/vui.dialog.html#constructor">vui.dialog</a></b> 
+	
+    <!-- Properties -->
+    
+    <!-- Inherited Properties -->
+    
+    <!-- Methods -->
+    
+    <!-- Inherited Methods -->
+    
+    
+    
+</div>
+<!-- /summary -->
+
+<!--  Class Detail -->
+<h1 id="dialog"><a href="#dialog">Class: dialog</a></h1>
+
+<!-- Description -->
+<h2>
+	对话框
+    
+</h2>
+<!-- Extra info: author, since, source, etc... -->
+<div class="extra">
+    
+        <div class="author">Author: putaoshu@126.com.</div>
+    
+    
+        <div>View source: <a href="../page/src/D__workDoc_vui_js_dialog.js.html">dialog.js</a>.</div>
+    
+    
+</div>
+<!-- Implements -->
+<!-- Extends -->
+
+<!-- Arguments -->
+
+    <h3>Arguments: </h3>
+	
+	<!-- Arguments detail -->
+	<p class="detail">
+	
+	<strong>vui.dialog</strong>
+	(options, callback)
+	</p>
+
+    <ol>
+        
+            <li> 
+				options 
+				- (<em>Object</em>)
+				
+               组件配置 
+            </li>
+        
+            <li> 
+				options.message 
+				- (<em>Object</em>)
+				
+               主对象 
+            </li>
+        
+            <li> 
+				options.mask 
+				- (<em>Boolean</em>)
+				
+               true 是否有遮罩层 
+            </li>
+        
+            <li> 
+				options.opacity 
+				- (<em>Number</em>)
+				
+               0.15 遮罩层透明度 
+            </li>
+        
+            <li> 
+				options.maskClass 
+				- (<em>String</em>)
+				
+               vuiDialogMask 遮罩层样式 
+            </li>
+        
+            <li> 
+				options.dialogClass 
+				- (<em>String</em>)
+				
+               vuiDialog 对话框主体样式 
+            </li>
+        
+            <li> 
+				options.close 
+				- (<em>Object</em>)
+				
+               true 是否采用vui.undialog关闭浮层 
+            </li>
+        
+            <li> 
+				options.maskIframe 
+				- (<em>Boolean</em>)
+				
+               false 遮罩层用iframe做底 
+            </li>
+        
+            <li> 
+				options.appendType 
+				- (<em>Boolean</em>)
+				
+               true true 直接先append到body 
+            </li>
+        
+            <li> 
+				options.stick 
+				- (<em>Object</em>)
+				
+               null  需要粘在某个元素上 
+            </li>
+        
+            <li> 
+				options.autoClientX 
+				- (<em>Boolean</em>)
+				
+               false 浮层宽度为当前窗口宽度 
+            </li>
+        
+            <li> 
+				options.autoClientY 
+				- (<em>Boolean</em>)
+				
+               false 浮层高度为当前窗口高度 
+            </li>
+        
+            <li> 
+				options.fixed 
+				- (<em>Boolean</em>)
+				
+               true 浮层是否fixed 
+            </li>
+        
+            <li> 
+				options.css 
+				- (<em>Object</em>)
+				
+               主体样式配置 
+            </li>
+        
+            <li> 
+				options.css.width 
+				- (<em>Number</em>)
+				
+               null 主体宽度 
+            </li>
+        
+            <li> 
+				options.css.height 
+				- (<em>Number</em>)
+				
+               null 主体高度 
+            </li>
+        
+            <li> 
+				options.css.top 
+				- (<em>Number</em>)
+				
+               null 主体top 
+            </li>
+        
+            <li> 
+				options.css.left 
+				- (<em>Number</em>)
+				
+               null 主体left 
+            </li>
+        
+            <li> 
+				options.css.zIndex 
+				- (<em>Number</em>)
+				
+               9998 主体zIndex 
+            </li>
+        
+            <li> 
+				callback 
+				- (<em>Function</em>)
+				
+               回调函数 
+            </li>
+        
+    </ol>
+
+<!-- Options -->
+
+<!-- Binds -->
+
+<!-- Returns -->
+
+<!-- Example -->
+
+	<h3>Example: </h3>
+    
+        <pre class="code example" id="example">
+vui.dialog({message:$('#dialog')});
+
+vui.dialog({
+	message:"&lt;h2 &gt;标题 &lt;/h2&gt;",
+	css:{
+		top:'10px',
+		left:'20px',
+		width:'300px',
+		zIndex:'10000'
+	}
+});
+
+vui.dialog({
+	message:$('#userGuide'),
+	opacity:0.5,
+	stick: $('#picModeOpt'), //粘到某个元素上
+	css:{
+		top : -17,
+		left : -365,
+		zIndex:10
+	}
+});</pre>
+    
+
+<!-- Requires -->
+
+<!-- See Also -->
+
+<!-- Events -->
+
+<!--
+        
+        Field Details
+        
+        -->
+
+<!--
+        
+          Methods
+        
+        -->
+
+<!-- / ownMethods -->
+</div>
+<div id="foot">
+    
+    <p> Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Mon Jul 23 2012 15:21:45 GMT+0800 (CST) </p>
+</div>
+<!-- / #foot -->
+</div>
+</body>
+</html>
