@@ -1,0 +1,451 @@
+/**
+* @VUI - css
+*
+* @version 1.0
+*
+* @author putaoshu@126.com
+*
+* @update 2011-12-11
+*
+*/
+
+/* YUI reset */
+html{color:#000;background:#FFF;}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;}
+table{border-collapse:collapse;border-spacing:0;}
+fieldset,img{border:0;}
+/*img{vertical-align:middle;} Todo ? 2011-12-01 */
+address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}
+li{list-style:none;}
+caption,th{text-align:left;}
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}
+q:before,q:after{content:'';}
+abbr,acronym{border:0;font-variant:normal;}
+sup{vertical-align:text-top;}
+sub{vertical-align:text-bottom;}
+input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;}
+input,textarea,select{*font-size:100%;}
+legend{color:#000;}
+
+/* fonts */
+body{font:12px/1.125 Arial;}
+select,input,button,textarea{font:100%;}
+table{font-size:inherit;font:100%;}
+pre,code,kbd,samp,tt{font-family:monospace;*font-size:108%;line-height:100%;}
+
+/* Headings
+------------------------------------------------------------------------------------------------------------------*/
+/* Headings */
+h1,h2,h3,h4,h5,h6,ul,ol,dl,p,blockquote{margin:10px;}/* margin:10px 0; */
+h1,.h1{font-size:18px;font-weight:bold;}/*  18px*/
+h1 small,.h1 small{font-size:16px;font-weight:normal;}
+
+h2,.h2{font-size:16px;font-weight:bold;}/* 16px */
+h2 small,.h2 small{font-size:14px;font-weight:normal;}
+
+h3,.h3{font-size:14px;color:#636363;font-weight:bold;}/* 14px */
+h3 small,.h3 small{font-size:12px;font-weight:normal;}
+
+h4,.h4{font-size:13px;color: #333;font-weight:bold;}/* 13px */
+h4 small,.h4 small{font-size:12px;font-weight:normal;}
+
+h5,.h5,
+h6,.h6{font-size:12px;color: #333;font-weight:bold;}/* 12px */
+
+h1 small,.h1 small,
+h2 small,.h2 small,
+h3 small,.h3 small,
+h4 small,.h4 small{color:#bfbfbf;}
+
+
+/* unit mod 
+------------------------------------------------------------------------------------------------------------------*/
+/* clearfix */
+.clearfix:after{content:'';display:block;height:0;clear:both}
+.clearfix{zoom:1}
+
+
+/* float */
+.fl{float:left;}
+.fr{float:right;}
+/* text-align */
+.tal{text-align:left;}
+.tar{text-align:right;}
+.tac{text-align:center;}
+
+/* unit */
+pre{margin: 10px;}
+em{font-style: italic;}
+strong{font-weight:bold;}
+
+/* hr,code,cite */
+hr,.hr,.hrLine{margin:0px;padding:0;border:none;border-bottom:1px solid #666;height:0px;}
+.hrLine{border-bottom-style:dashed;}
+
+code{color:#0B8C8F;}
+cite{display:block;text-align:right;padding-top:10px;}
+
+
+/* links */
+a {color:#004080;text-decoration: none;}
+a:focus,a:hover{text-decoration: underline;}
+/* 
+a:focus{background-color:#ffffcc;}
+a:visited { color:#005a9c; } 
+*/
+
+/* 常用颜色值 */
+.red{color:#f00;}
+.red a{color:#f00;}
+.white{color:#fff;}
+.white a{color:#fff;}
+.black{color:#000;}
+.black a{color:#000;}
+.yellow{color:#ff0;}
+.yellow a{color:#ff0;}
+.blue{color:#00f;}
+.blue a{color:#00f;}
+.green{color:#00f;}
+.green a{color:#00f;}
+
+/* 常用缩进 */
+.em1{text-indent:1em;}
+.em2{text-indent:2em;}
+.em3{text-indent:3em;}
+.em4{text-indent:4em;}
+
+/* margin */
+.ml0{margin-left:0px;}
+.mr0{margin-right:0;}/* Page */
+
+.topbar{position:fixed;width:100%;height:30px;line-height:30px;color:#fff;background-color:#222;}
+
+.wrapper{margin:0 auto;width:990px;}
+
+.main{display:table-cell;*display:block;*zoom:1;width:auto;}
+.main:after{content:'';display:block;height:0;clear:both;}
+
+.content:after{content:'';display:block;height:0;clear:both;}
+.content{zoom:1;}
+
+.sidebar{float:left;width:250px;_margin-right:-3px;}
+.extrabar{float:right;width:300px;_margin-left:-3px;}
+
+.header{clear:both;}
+.footer{clear:both;}
+
+
+/* 自适应--流动布局 */
+.liquid{width:auto;margin:0;}
+.gs960{margin:0 auto;width:960px;}
+/* grids */
+
+.line,.line .lastUnit{overflow:hidden;*overflow:visible;*zoom:1;}
+.line .unit{float:left;}
+.line .unitRight{float:right;}
+
+.size1of1{float:none;}
+.size1of2{width:50%;}
+.size1of3{width:33.33333%;}
+.size2of3{width:66.66666%;}
+
+.size1of4{width:25%;}
+.size2of4{width:50%;}
+.size3of4{width:75%;}
+
+.size1of5{width:20%;}
+.size2of5{width:40%;}
+.size3of5{width:60%;}
+.size4of5{width:80%;}
+
+.size1of6{width:16.6666%;}
+.size2of6{width:33.33333%;}
+.size3of6{width:49.99999%;}
+.size4of6{width:66.66666%;;}
+.size5of6{width:83.33333%;}
+
+.size1of7{width:14.2857143%;}
+.size2of7{width:28.5714286%;}
+.size3of7{width:42.8571429%;}
+.size4of7{width:57.1428572%;}
+.size5of7{width:71.4285715%;}
+.size6of7{width:85.7142858%;}
+
+.line .lastUnit{float:none;width:auto;_position:relative;_left:-3px;_margin-right:-3px;}
+
+/* 清除最后一unit的margin-right */
+.line .lastUnitMain{margin-right:0px;}
+
+/* new 2011-12-11 */
+.rtl {direction:rtl;}
+.rtl .unit{float:right;}
+.rtl .lastUnit{_right:-3px;_margin-left:-3px;_margin-right:0; _left:0;}             /* media 
+.media{overflow:hidden;*overflow:visible;zoom:1;}
+.media .img{float:left;}
+.media .img img{display:block;}
+.media .imgExt{float:right;}
+*/
+
+.cell:after{content:'';display:block;height:0;clear:both;}
+.cell{zoom:1;}
+.cell .hd,
+.cell .ft,
+.cell .bd{overflow:hidden;*overflow:visible; zoom:1;}
+.cell .hd{float:left;}
+.cell .ft{float:right;}
+/* mod */
+.mod{margin:10px 0;}
+
+.mod .bd,
+.mod .ft,
+.mod .hd{overflow:hidden; *overflow:visible; zoom:1;}
+
+
+
+
+
+/* modHeading */
+.modHeading:after{content:'';display:block;height:0;clear:both;}
+.modHeading{padding:0 10px;zoom:1;}
+
+.modHeading .hd{float:left;}
+.modHeading .bd{float:right;}
+
+/* modHeadingExt */
+.modHeadingExt{margin:0 0 10px 10px;margin-left:10px;padding:0 10px;}
+.modHeadingExtA{margin:0 10px;padding-left:10px;}
+
+/**
+* @name	:mode_name_b
+* @author	:ghostzhang
+* @version	:1.0
+* @type	:扩展类
+* @explain	:Demo
+* @dependent	:mode_name http://www.cssforest.org/blog/index.php?id=168
+*/
+
+
+
+h3{display:block;}
+h3 .hd{float:left;}
+h3 .ft{float:right;}/* modExt */
+.modExt{border:1px solid #d9d9d9;}
+.modExt .hd{background-color:#eee;}
+
+
+/* modSimple*/
+.modSimple .hd{background-color:#eee;}
+.modSimple{border:1px solid #eee;border-radius:4px;-moz-border-radius:4px;-webkit-border-radius:4px;}
+/**
+* @unit:radius,banner,border
+*
+* @version 1.0
+*
+* @author putaoshu@126.com
+*
+* @update 2011-11-30
+*
+*/
+
+/* radius 
+---------------------------------------------------------------------------------------*/
+.radius{border-radius:3px;-moz-border-radius:3px;-webkit-border-radius:3px;}
+.radius5{border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;}
+.radius10{border-radius:10px;-moz-border-radius:10px;-webkit-border-radius:10px;}
+/* banner 
+---------------------------------------------------------------------------------------*/
+.banner{padding:2px 10px;font-weight:bold;}
+.bannerMargin{margin:10px;}
+.bannerExt{padding:10px 0;padding-left:10px;}
+
+/* border 
+---------------------------------------------------------------------------------------*/
+
+/*.hd h1, .hd h2, .hd h3, .hd h4, .hd h5, .hd h6{padding: 5px 10px;}
+.section{background: #e9e9e9 url(skinMod/header.png) repeat-x left bottom; color:#de2c72;font-size:120%;}
+.section h1,.section h2,.section h3,.section h4,.section h5,.section h6{font-size:100%;color:#de2c72;}
+.act{background-color:#e9e9e9;}
+.topper{background: #fff url(skinMod/header_gradient_light.png) repeat-x left bottom;color: #4D4D4D;font-size:120%;padding:5px 10px;}
+.topper h1,.topper h2,.topper h3,.topper h4,.topper h5,.topper h6{font-size:100%;color:#4D4D4D;padding:0;}
+.tabPosLeft .topper li,.tabPosRight .topper li{background: #fff url(skinMod/header_gradient_light.png) repeat-x left bottom;}
+.tabPosBottom .topper{
+  background-image:-webkit-gradient(linear, 0% 0%, 0% 40%, from(#E2E2E2), to(#FFFFFF));
+  background-image:-moz-linear-gradient(0% 8% 270deg, #E2E2E2, #FFFFFF, #FFFFFF 77%);}
+.bam{background: #00477a url(skinMod/header_glossy.png) repeat-x left top;color: #fff;font-size:120%;padding:5px 10px;}
+.bam h1,.bam h2,.bam h3,.bam h4,.bam h5,.bam h6{font-size:100%;color:#fff;padding:0;}
+.online{background: #9a9400 url(skinMod/online.png) repeat-x left top;color: #000;font-size:120%;padding:5px 10px;}
+.online h1,.online h2,.online h3,.online h4,.online h5,.online h6{font-size:100%;color:#000;padding:0;}
+.help{background: #b20029 url(skinMod/help.png) repeat-x left top;color: #fff;font-size:120%;padding:5px 10px;}
+.help h1,.help h2,.help h3,.help h4,.help h5,.help h6{font-size:100%;color:#fff;padding:0;}
+.info{background: #636363 url(skinMod/info.png) repeat-x left top;color: #fff;font-size:120%;padding:5px 10px;}
+.info h1,.info h2,.info h3,.info h4,.info h5,.info h6{font-size:100%;color:#fff;padding:0;}*//**
+* @unit:radius,banner,border
+*
+* @version 1.0
+*
+* @author putaoshu@126.com
+*
+* @update 2011-11-30
+*
+*/
+
+
+/* banner 2011-11-30 
+---------------------------------------------------------------------------------------*/
+.bannerA h3{color:#fff;}
+
+.bannerA{
+border:1px solid #585858;
+color: #fff;
+background: #787878; /* Old browsers */
+background: -moz-linear-gradient(top,  #787878 0%, #585858 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#787878), color-stop(100%,#585858)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #787878 0%,#585858 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #787878 0%,#585858 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #787878 0%,#585858 100%); /* IE10+ */
+background: linear-gradient(top,  #787878 0%,#585858 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#787878', endColorstr='#585858',GradientType=0 ); /* IE6-9 */
+}
+
+.bannerB{background:#eee;}
+
+.bannerC{
+background: #efefef; /* Old browsers */
+background: -moz-linear-gradient(top,  #efefef 0%, #dddddd 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#efefef), color-stop(100%,#dddddd)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #efefef 0%,#dddddd 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #efefef 0%,#dddddd 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #efefef 0%,#dddddd 100%); /* IE10+ */
+background: linear-gradient(top,  #efefef 0%,#dddddd 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#efefef', endColorstr='#dddddd',GradientType=0 ); /* IE6-9 */
+}
+
+.bannerD{
+background: #fefefe; /* Old browsers */
+background: -moz-linear-gradient(top,  #fefefe 0%, #f4f4f4 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fefefe), color-stop(100%,#f4f4f4)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #fefefe 0%,#f4f4f4 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #fefefe 0%,#f4f4f4 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #fefefe 0%,#f4f4f4 100%); /* IE10+ */
+background: linear-gradient(top,  #fefefe 0%,#f4f4f4 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#f4f4f4',GradientType=0 ); /* IE6-9 */
+}
+
+.bannerE{
+background: #fdfdfd; /* Old browsers */
+background: -moz-linear-gradient(top,  #fdfdfd 0%, #f9f9f9 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fdfdfd), color-stop(100%,#f9f9f9)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #fdfdfd 0%,#f9f9f9 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #fdfdfd 0%,#f9f9f9 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #fdfdfd 0%,#f9f9f9 100%); /* IE10+ */
+background: linear-gradient(top,  #fdfdfd 0%,#f9f9f9 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfdfd', endColorstr='#f9f9f9',GradientType=0 ); /* IE6-9 */
+}
+
+.bannerF{
+background: #eeeeee; /* Old browsers */
+background: -moz-linear-gradient(top,  #eeeeee 0%, #cdcdcd 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(100%,#cdcdcd)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #eeeeee 0%,#cdcdcd 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #eeeeee 0%,#cdcdcd 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #eeeeee 0%,#cdcdcd 100%); /* IE10+ */
+background: linear-gradient(top,  #eeeeee 0%,#cdcdcd 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cdcdcd',GradientType=0 ); /* IE6-9 */
+}
+
+
+/* border 
+---------------------------------------------------------------------------------------*/
+.bn{border:none;}
+.border{border:1px solid #C3C3C3;}
+.borderA{border:1px solid #ececec;}
+/*Data Table*/
+.data{position:relative;zoom:1;vertical-align:top;text-align:left;}
+.data table {width:100%; table-layout:fixed;}
+.data table tr img{vertical-align:middle;}
+
+.data th{padding:5px}
+.data td{padding:5px}
+/* simpleTable  */
+.simpleTable table{border:1px solid #C3C3C3;}
+.simpleTable th{color: #000; font-weight:bold}
+.simpleTable th, .simpleTable td{border:1px solid #C3C3C3;}
+/* thead */
+.simpleTable thead tr{}
+/* tbody */
+.simpleTable tbody tr:nth-child(even){background-color:#F2F2F2;}
+.simpleTable tbody tr:hover{background-color:#FFFFD7;}
+
+/* specification table @extends data table */
+.spec{padding:10px;}
+.spec table{border-top: 1px solid #e2e2e2; border-bottom-color:#fff; border-left:none; border-right:none;}
+.spec th, .spec td{border:1px solid #e2e2e2; border-width: 1px 0; padding-left:0;}
+.spec .odd, .spec .even{background-color: #fff;}/* page */
+.page a{margin-right:10px;padding:2px 5px;text-align:center;}
+.page a:hover{text-decoration:none;}/* page */
+.page a{border:1px solid #e0e0e0;background-color:#fff;}
+.page a:hover{background-color:#ffe3d7;}
+.page .select{background-color:#ff915b;}
+/*  
+.page .prev{background:url(skinMod/prev.png) no-repeat;} *//* form */
+
+input{padding:5px;margin-right:10px;vertical-align:middle;}
+input img{vertical-align:middle;}
+button,.button{padding:5px 10px;margin-right:10px;cursor:pointer;vertical-align:middle;}
+button img,.button img{display:inline-block;display:-moz-inline-stack;*display:inline;*zoom:1;padding-right:3px;}
+textarea,.textarea{padding:5px;overflow-x:hidden;overflow-y:auto;height:100px;vertical-align:top;width:80%;}
+select{margin-right:10px;}
+/* form */
+
+input,.input{color:#999;}
+input:focus,.input:focus{color:#333;outline:none;}
+
+input[type="text"]{border:1px solid #ccc;}
+
+textarea{border:1px solid #d8dadb;color:#999;}
+textarea:focus{color:#333;outline:none;}
+
+button,.button{background-color:#F3F3F3;border:1px solid #cecece;color:#333;
+background: #fdfefd; /* Old browsers */
+background: -moz-linear-gradient(top,  #fdfefd 0%, #e6e6e6 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fdfefd), color-stop(100%,#e6e6e6)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #fdfefd 0%,#e6e6e6 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #fdfefd 0%,#e6e6e6 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #fdfefd 0%,#e6e6e6 100%); /* IE10+ */
+background: linear-gradient(top,  #fdfefd 0%,#e6e6e6 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfefd', endColorstr='#e6e6e6',GradientType=0 ); /* IE6-9 */
+}
+
+button:hover,.button:hover{
+background: #fbfbfb; /* Old browsers */
+background: -moz-linear-gradient(top,  #fbfbfb 0%, #f1f1f1 38%, #ececec 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fbfbfb), color-stop(38%,#f1f1f1), color-stop(100%,#ececec)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #fbfbfb 0%,#f1f1f1 38%,#ececec 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #fbfbfb 0%,#f1f1f1 38%,#ececec 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #fbfbfb 0%,#f1f1f1 38%,#ececec 100%); /* IE10+ */
+background: linear-gradient(top,  #fbfbfb 0%,#f1f1f1 38%,#ececec 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fbfbfb', endColorstr='#ececec',GradientType=0 ); /* IE6-9 */
+}
+
+.buttonA{
+background: #f1b610; /* Old browsers */
+background: -moz-linear-gradient(top,  #f1b610 0%, #ed9a1c 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f1b610), color-stop(100%,#ed9a1c)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #f1b610 0%,#ed9a1c 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #f1b610 0%,#ed9a1c 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #f1b610 0%,#ed9a1c 100%); /* IE10+ */
+background: linear-gradient(top,  #f1b610 0%,#ed9a1c 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f1b610', endColorstr='#ed9a1c',GradientType=0 ); /* IE6-9 */
+border:1px solid #e0b00c;
+color:#fff;
+}
+.buttonA:hover{
+background: #f4c870; /* Old browsers */
+background: -moz-linear-gradient(top,  #f4c870 0%, #e68d14 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f4c870), color-stop(100%,#e68d14)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #f4c870 0%,#e68d14 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #f4c870 0%,#e68d14 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #f4c870 0%,#e68d14 100%); /* IE10+ */
+background: linear-gradient(top,  #f4c870 0%,#e68d14 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f4c870', endColorstr='#e68d14',GradientType=0 ); /* IE6-9 */
+}

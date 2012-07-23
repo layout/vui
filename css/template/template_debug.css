@@ -1,0 +1,8 @@
+/* template_debug */
+.header,
+.footer{background-color:#f1f1f1;}
+
+.wrapper{background-color:red;}
+.main{background-color:yellow;}
+.sidebar{background-color:lime;}
+.extrabar{background-color:aqua;}

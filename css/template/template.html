@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>vui_css_布局</title>
+<link rel="stylesheet" href="../vui_css_import.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="../vui_css_doc.css" type="text/css" media="all"/>
+</head>
+<body>
+<div class="wrapper">
+<h3>所有栅格</h3>
+<div class="data">
+	<table>
+		<thead>
+			<tr><th><h4>属性</h4></th><th><h4>注解</h4></th></tr>
+		</thead>
+		<tbody>
+			<tr><td>topbar</td><td>常用最底部固定导航</td></tr>
+			<tr><td>wrapper</td><td>最外围,默认宽度990px</td></tr>
+			<tr><td>header</td><td>页头</td></tr>
+			<tr><td>content</td><td>主体</td></tr>
+			<tr><td>footer</td><td>页脚</td></tr>
+		
+			<tr><td>main</td><td>主体---主体内容</td></tr>
+			<tr><td>sidebar</td><td>主体---左侧辅助内容;宽度为250px</td></tr>
+			<tr><td>extrabar</td><td>主体---右侧辅助内容;宽度为300px</td></tr>
+
+			<tr><td>liquid</td><td> 自适应---流动布局即宽度为100%</td></tr>
+			<tr><td>gs960</td><td>栅格960即宽度为960px</td></tr>
+		</tbody>
+	</table>
+</div>
+
+<h3>默认990px布局</h3>
+
+<pre class="prettyprint">
+&lt;!-- topbar --&gt;
+&lt;div class="topbar"&gt;
+	topbar
+&lt;/div&gt;
+&lt;!-- /topbar --&gt;
+&lt;div class="wrapper"&gt;
+	&lt;!-- header --&gt;
+	&lt;div class="header"&gt;
+
+	&lt;/div&gt;
+	&lt;!-- /header --&gt;
+	&lt;!-- content --&gt;
+	&lt;div class="content"&gt;
+		&lt;div class="sidebar"&gt;&lt;/div&gt;&lt;!-- sidebar --&gt;
+		&lt;div class="extrabar"&gt;&lt;/div&gt;&lt;!-- extrabar --&gt;
+		&lt;div class="main"&gt;&lt;/div&gt;&lt;!-- main --&gt;
+	&lt;/div&gt;
+	&lt;!-- /content --&gt;
+	
+	&lt;!-- footer --&gt;
+	&lt;div class="footer"&gt;
+		
+	&lt;/div&gt;
+	&lt;!-- /footer --&gt;
+&lt;/div&gt;
+</pre>
+
+<!-- topbar
+<div class="topbar">
+topbar
+</div> -->
+<!-- /topbar -->
+<div class="wrapper">
+	<!-- header -->
+	<div class="header">
+	header
+	</div>
+	<!-- /header -->
+	<!-- content -->
+	<div class="content">
+		<div class="sidebar">sidebar 宽度为250px</div><!-- sidebar -->
+		<div class="extrabar">extrabar 宽度为300px</div><!-- extrabar -->
+		<div class="main">main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main </div><!-- main -->
+	</div>
+	<!-- /content -->
+
+	<!-- footer -->
+	<div class="footer">
+	footer
+	</div>
+	<!-- /footer -->
+</div>
+
+<hr/>
+
+
+<div class="wrapper">
+	<!-- header -->
+	<div class="header">
+	header
+	</div>
+	<!-- /header -->
+	<!-- content -->
+	<div class="content">
+		<div class="sidebar">sidebar 宽度为250px </div><!-- sidebar -->
+		<div class="main">main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main </div><!-- main -->
+	</div>
+	<!-- /content -->
+
+	<!-- footer -->
+	<div class="footer">
+	footer
+	</div>
+	<!-- /footer -->
+</div>
+
+<h3>960px布局</h3>
+<pre class="prettyprint">
+.gs960{margin:0 auto;width:960px;}
+</pre>
+<div class="gs960">
+	<!-- header -->
+	<div class="header">
+	header
+	</div>
+	<!-- /header -->
+	<!-- content -->
+	<div class="content">
+		<div class="sidebar">sidebar</div><!-- sidebar -->
+		<div class="main">main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main </div><!-- main -->
+	</div>
+	<!-- /content -->
+
+	<!-- footer -->
+	<div class="footer">
+	footer
+	</div>
+	<!-- /footer -->
+</div>
+
+<h3>流动布局</h3>
+<pre class="prettyprint">
+.liquid{width:auto;margin:0;}
+</pre>
+<div class="liquid">
+	<!-- header -->
+	<div class="header">
+	header
+	</div>
+	<!-- /header -->
+	<!-- content -->
+	<div class="content">
+		<div class="sidebar">sidebar</div><!-- sidebar -->
+		<div class="main">main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main main </div><!-- main -->
+	</div>
+	<!-- /content -->
+
+	<!-- footer -->
+	<div class="footer">
+	footer
+	</div>
+	<!-- /footer -->
+</div>
+
+</div>
+
+</body>
+</html>

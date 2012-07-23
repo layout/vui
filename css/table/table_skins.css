@@ -1,0 +1,15 @@
+/* simpleTable  */
+.simpleTable table{border:1px solid #C3C3C3;}
+.simpleTable th{color: #000; font-weight:bold}
+.simpleTable th, .simpleTable td{border:1px solid #C3C3C3;}
+/* thead */
+.simpleTable thead tr{}
+/* tbody */
+.simpleTable tbody tr:nth-child(even){background-color:#F2F2F2;}
+.simpleTable tbody tr:hover{background-color:#FFFFD7;}
+
+/* specification table @extends data table */
+.spec{padding:10px;}
+.spec table{border-top: 1px solid #e2e2e2; border-bottom-color:#fff; border-left:none; border-right:none;}
+.spec th, .spec td{border:1px solid #e2e2e2; border-width: 1px 0; padding-left:0;}
+.spec .odd, .spec .even{background-color: #fff;}

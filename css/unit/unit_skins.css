@@ -1,0 +1,81 @@
+/**
+* @unit:radius,banner,border
+*
+* @version 1.0
+*
+* @author putaoshu@126.com
+*
+* @update 2011-11-30
+*
+*/
+
+
+/* banner 2011-11-30 
+---------------------------------------------------------------------------------------*/
+.bannerA h3{color:#fff;}
+
+.bannerA{
+border:1px solid #585858;
+color: #fff;
+background: #787878; /* Old browsers */
+background: -moz-linear-gradient(top,  #787878 0%, #585858 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#787878), color-stop(100%,#585858)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #787878 0%,#585858 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #787878 0%,#585858 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #787878 0%,#585858 100%); /* IE10+ */
+background: linear-gradient(top,  #787878 0%,#585858 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#787878', endColorstr='#585858',GradientType=0 ); /* IE6-9 */
+}
+
+.bannerB{background:#eee;}
+
+.bannerC{
+background: #efefef; /* Old browsers */
+background: -moz-linear-gradient(top,  #efefef 0%, #dddddd 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#efefef), color-stop(100%,#dddddd)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #efefef 0%,#dddddd 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #efefef 0%,#dddddd 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #efefef 0%,#dddddd 100%); /* IE10+ */
+background: linear-gradient(top,  #efefef 0%,#dddddd 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#efefef', endColorstr='#dddddd',GradientType=0 ); /* IE6-9 */
+}
+
+.bannerD{
+background: #fefefe; /* Old browsers */
+background: -moz-linear-gradient(top,  #fefefe 0%, #f4f4f4 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fefefe), color-stop(100%,#f4f4f4)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #fefefe 0%,#f4f4f4 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #fefefe 0%,#f4f4f4 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #fefefe 0%,#f4f4f4 100%); /* IE10+ */
+background: linear-gradient(top,  #fefefe 0%,#f4f4f4 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#f4f4f4',GradientType=0 ); /* IE6-9 */
+}
+
+.bannerE{
+background: #fdfdfd; /* Old browsers */
+background: -moz-linear-gradient(top,  #fdfdfd 0%, #f9f9f9 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fdfdfd), color-stop(100%,#f9f9f9)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #fdfdfd 0%,#f9f9f9 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #fdfdfd 0%,#f9f9f9 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #fdfdfd 0%,#f9f9f9 100%); /* IE10+ */
+background: linear-gradient(top,  #fdfdfd 0%,#f9f9f9 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfdfd', endColorstr='#f9f9f9',GradientType=0 ); /* IE6-9 */
+}
+
+.bannerF{
+background: #eeeeee; /* Old browsers */
+background: -moz-linear-gradient(top,  #eeeeee 0%, #cdcdcd 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(100%,#cdcdcd)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #eeeeee 0%,#cdcdcd 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #eeeeee 0%,#cdcdcd 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #eeeeee 0%,#cdcdcd 100%); /* IE10+ */
+background: linear-gradient(top,  #eeeeee 0%,#cdcdcd 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cdcdcd',GradientType=0 ); /* IE6-9 */
+}
+
+
+/* border 
+---------------------------------------------------------------------------------------*/
+.bn{border:none;}
+.border{border:1px solid #C3C3C3;}
+.borderA{border:1px solid #ececec;}

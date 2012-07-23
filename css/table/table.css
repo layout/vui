@@ -1,0 +1,7 @@
+/*Data Table*/
+.data{position:relative;zoom:1;vertical-align:top;text-align:left;}
+.data table {width:100%; table-layout:fixed;}
+.data table tr img{vertical-align:middle;}
+
+.data th{padding:5px}
+.data td{padding:5px}

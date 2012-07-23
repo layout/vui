@@ -1,0 +1,8 @@
+/* modExt */
+.modExt{border:1px solid #d9d9d9;}
+.modExt .hd{background-color:#eee;}
+
+
+/* modSimple*/
+.modSimple .hd{background-color:#eee;}
+.modSimple{border:1px solid #eee;border-radius:4px;-moz-border-radius:4px;-webkit-border-radius:4px;}

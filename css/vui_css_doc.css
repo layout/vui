@@ -1,0 +1,8 @@
+/* vui css document */
+body{padding:10px;}
+.testLine {margin-bottom:10px;margin-right:10px;}
+
+pre{background:#f1f1f1;border:1px dashed #ccc;overflow:auto;padding:10px;}
+
+pre,code,tt{-x-system-font:none;font-family:'andale mono','lucida console',monospace;font-size:1em;font-size-adjust:none;font-stretch:normal;font-style:normal;font-variant:normal;font-weight:normal;line-height:1.5;}
+pre,code{margin:1.5em 0;white-space:pre;}

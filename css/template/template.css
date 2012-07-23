@@ -1,0 +1,22 @@
+/* Page */
+
+.topbar{position:fixed;width:100%;height:30px;line-height:30px;color:#fff;background-color:#222;}
+
+.wrapper{margin:0 auto;width:990px;}
+
+.main{display:table-cell;*display:block;*zoom:1;width:auto;}
+.main:after{content:'';display:block;height:0;clear:both;}
+
+.content:after{content:'';display:block;height:0;clear:both;}
+.content{zoom:1;}
+
+.sidebar{float:left;width:250px;_margin-right:-3px;}
+.extrabar{float:right;width:300px;_margin-left:-3px;}
+
+.header{clear:both;}
+.footer{clear:both;}
+
+
+/* 自适应--流动布局 */
+.liquid{width:auto;margin:0;}
+.gs960{margin:0 auto;width:960px;}
