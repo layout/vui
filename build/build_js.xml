@@ -1,5 +1,5 @@
 ﻿<project name="common-build" basedir="." default="common.build">
-	<description>压缩合并vui</description>
+	<description>压缩合并vui js</description>
 	<dirname property="current.dir" file="${ant.file.common-build}"/>
 	
 	<!--js源代码目录 -->
@@ -37,7 +37,7 @@
 		<echo message="end yuicompressor" />
 	</target>
 
-	<!-- common.build copydir -->
+	<!-- do -->
 	<target name="common.build" depends="concatenate,yuicompressor">
 	</target>
 

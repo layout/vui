@@ -1,0 +1,8 @@
+/* form */
+
+input{padding:5px;margin-right:10px;vertical-align:middle;}
+input img{vertical-align:middle;}
+button,.button{padding:5px 10px;margin-right:10px;cursor:pointer;vertical-align:middle;}
+button img,.button img{display:inline-block;display:-moz-inline-stack;*display:inline;*zoom:1;padding-right:3px;}
+textarea,.textarea{padding:5px;overflow-x:hidden;overflow-y:auto;height:100px;vertical-align:top;width:80%;}
+select{margin-right:10px;}

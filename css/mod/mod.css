@@ -1,0 +1,36 @@
+/* mod */
+.mod{margin:10px 0;}
+
+.mod .bd,
+.mod .ft,
+.mod .hd{overflow:hidden; *overflow:visible; zoom:1;}
+
+
+
+
+
+/* modHeading */
+.modHeading:after{content:'';display:block;height:0;clear:both;}
+.modHeading{padding:0 10px;zoom:1;}
+
+.modHeading .hd{float:left;}
+.modHeading .bd{float:right;}
+
+/* modHeadingExt */
+.modHeadingExt{margin:0 0 10px 10px;margin-left:10px;padding:0 10px;}
+.modHeadingExtA{margin:0 10px;padding-left:10px;}
+
+/**
+* @name	:mode_name_b
+* @author	:ghostzhang
+* @version	:1.0
+* @type	:扩展类
+* @explain	:Demo
+* @dependent	:mode_name http://www.cssforest.org/blog/index.php?id=168
+*/
+
+
+
+h3{display:block;}
+h3 .hd{float:left;}
+h3 .ft{float:right;}

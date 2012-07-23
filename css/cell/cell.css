@@ -1,0 +1,14 @@
+/* media 
+.media{overflow:hidden;*overflow:visible;zoom:1;}
+.media .img{float:left;}
+.media .img img{display:block;}
+.media .imgExt{float:right;}
+*/
+
+.cell:after{content:'';display:block;height:0;clear:both;}
+.cell{zoom:1;}
+.cell .hd,
+.cell .ft,
+.cell .bd{overflow:hidden;*overflow:visible; zoom:1;}
+.cell .hd{float:left;}
+.cell .ft{float:right;}

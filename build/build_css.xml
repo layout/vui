@@ -1,0 +1,56 @@
+﻿<project name="common-build" basedir="." default="common.build">
+	<description>压缩合并vui css</description>
+	<dirname property="current.dir" file="${ant.file.common-build}"/>
+	
+	<!--css源代码目录 -->
+	<property name="css.dir" location="../css/"/>
+	<!-- css压缩后的目标目录 -->
+	<property name="build.dir" location="../static/"/>
+
+	<property name="yuicompressor.jar" location="../tools/compressor/yuicompressor-2.4.7.jar"/>
+	<property name="charset" value="utf-8"/>
+	
+	<!-- 生成的js文件名 -->
+	<property name="target.filename" value="vui" />
+	<!-- 生成的js文件名(未压缩的) -->
+	<property name="target.uncomprerss.filename" value="vui_uncomprerss" />
+	
+	<!-- 文件合并,核心文件排在前面 -->
+	<target name="concatenate">
+		<echo message="start concatenate" />
+		<concat destfile="${build.dir}/${target.uncomprerss.filename}.css" encoding="${charset}" outputencoding="${charset}">  
+			<filelist dir="${css.dir}" >
+				<!-- 文件列表 (顺序参考css/vui_css_import.css) -->
+				<file name="reset/reset.css" /> 
+				<file name="template/template.css" /> 
+				<file name="grids/grids.css " /> 
+				<file name="cell/cell.css" /> 
+				<file name="mod/mod.css" /> 
+				<file name="mod/mod_skins.css" /> 
+				<file name="unit/unit.css" /> 
+				<file name="unit/unit_skins.css" /> 
+				<file name="table/table.css" /> 
+				<file name="table/table_skins.css" /> 
+				<file name="page/page.css" /> 
+				<file name="page/page_skins.css" />
+				<file name="form/form.css" /> 
+				<file name="form/form_skins.css" /> 				
+			</filelist>
+		 </concat>
+		 <echo message="end concatenate" />
+	</target>
+
+	<!-- yuicompressor -->
+	<target name="yuicompressor">
+		<echo message="start yuicompressor" />
+		<java jar="${yuicompressor.jar}" fork="true" failonerror="false">
+			<arg line="--type css --charset ${charset} -v ${build.dir}/${target.uncomprerss.filename}.css -o ${build.dir}/${target.filename}.css" />
+		</java>
+		<echo message="end yuicompressor" />
+	</target>
+
+	<!-- do -->
+	<target name="common.build" depends="concatenate,yuicompressor">
+	</target>
+
+</project>

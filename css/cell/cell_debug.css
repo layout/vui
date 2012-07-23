@@ -1,0 +1,8 @@
+/* cell debug */
+/* 
+.cell .hd,
+.cell .ft,
+.cell .bd{padding:10px;} */
+
+.cell .hd{background-color:#333;color:#fff;}
+.cell .bd{background-color:#f1f1f1;}
