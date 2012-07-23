@@ -1,0 +1,508 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/*
+<span class='line'>  2</span>  * Date prototype extensions. Doesn't depend on any
+<span class='line'>  3</span>  * other code. Doens't overwrite existing methods.
+<span class='line'>  4</span>  *
+<span class='line'>  5</span>  * Adds dayNames, abbrDayNames, monthNames and abbrMonthNames static properties and isLeapYear,
+<span class='line'>  6</span>  * isWeekend, isWeekDay, getDaysInMonth, getDayName, getMonthName, getDayOfYear, getWeekOfYear,
+<span class='line'>  7</span>  * setDayOfYear, addYears, addMonths, addDays, addHours, addMinutes, addSeconds methods
+<span class='line'>  8</span>  *
+<span class='line'>  9</span>  * Copyright (c) 2006 Jörn Zaefferer and Brandon Aaron (brandon.aaron@gmail.com || http://brandonaaron.net)
+<span class='line'> 10</span>  *
+<span class='line'> 11</span>  * Additional methods and properties added by Kelvin Luck: firstDayOfWeek, dateFormat, zeroTime, asString, fromString -
+<span class='line'> 12</span>  * I've added my name to these methods so you know who to blame if they are broken!
+<span class='line'> 13</span>  * 
+<span class='line'> 14</span>  * Dual licensed under the MIT and GPL licenses:
+<span class='line'> 15</span>  *   http://www.opensource.org/licenses/mit-license.php
+<span class='line'> 16</span>  *   http://www.gnu.org/licenses/gpl.html
+<span class='line'> 17</span>  *
+<span class='line'> 18</span>  */</span><span class="WHIT">
+<span class='line'> 19</span> 
+<span class='line'> 20</span> </span><span class="COMM">/**
+<span class='line'> 21</span> 
+<span class='line'> 22</span> ****compress
+<span class='line'> 23</span> Date.dayNames = [ '星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六' ];Date.abbrDayNames = [ '日', '一', '二', '三', '四', '五', '六' ];Date.monthNames = [ '一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月','十一月', '十二月' ];Date.abbrMonthNames = [ '一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一',	'十二' ];
+<span class='line'> 24</span> 
+<span class='line'> 25</span>  * An Array of day names starting with Sunday.
+<span class='line'> 26</span>  * 
+<span class='line'> 27</span>  * @example dayNames[0]
+<span class='line'> 28</span>  * @result 'Sunday'
+<span class='line'> 29</span>  * 
+<span class='line'> 30</span>  * @name dayNames
+<span class='line'> 31</span>  * @type Array
+<span class='line'> 32</span>  * @cat Plugins/Methods/Date
+<span class='line'> 33</span>  */</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="COMM">//Date.dayNames = [ '星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六' ];</span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="NAME">Date.dayNames</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="WHIT"> </span><span class="STRN">'\u661f\u671f\u5929'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u661f\u671f\u4e00'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u661f\u671f\u4e8c'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u661f\u671f\u4e09'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u661f\u671f\u56db'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u661f\u671f\u4e94'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u661f\u671f\u516d'</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 36</span> 
+<span class='line'> 37</span> </span><span class="COMM">/**
+<span class='line'> 38</span>  * An Array of abbreviated day names starting with Sun.
+<span class='line'> 39</span>  * 
+<span class='line'> 40</span>  * @example abbrDayNames[0]
+<span class='line'> 41</span>  * @result 'Sun'
+<span class='line'> 42</span>  * 
+<span class='line'> 43</span>  * @name abbrDayNames
+<span class='line'> 44</span>  * @type Array
+<span class='line'> 45</span>  * @cat Plugins/Methods/Date
+<span class='line'> 46</span>  */</span><span class="WHIT">
+<span class='line'> 47</span> </span><span class="COMM">//Date.abbrDayNames = [ '日', '一', '二', '三', '四', '五', '六' ];</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="NAME">Date.abbrDayNames</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="WHIT"> </span><span class="STRN">'\u65e5'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u4e00'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u4e8c'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u4e09'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u56db'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u4e94'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u516d'</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 49</span> 
+<span class='line'> 50</span> </span><span class="COMM">/**
+<span class='line'> 51</span>  * An Array of month names starting with Janurary.
+<span class='line'> 52</span>  * 
+<span class='line'> 53</span>  * @example monthNames[0]
+<span class='line'> 54</span>  * @result 'January'
+<span class='line'> 55</span>  * 
+<span class='line'> 56</span>  * @name monthNames
+<span class='line'> 57</span>  * @type Array
+<span class='line'> 58</span>  * @cat Plugins/Methods/Date
+<span class='line'> 59</span>  */</span><span class="WHIT">
+<span class='line'> 60</span> </span><span class="COMM">//Date.monthNames = [ '一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月','十一月', '十二月' ];</span><span class="WHIT">
+<span class='line'> 61</span> </span><span class="NAME">Date.monthNames</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="WHIT"> </span><span class="STRN">'\u4e00\u6708'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u4e8c\u6708'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u4e09\u6708'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u56db\u6708'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u4e94\u6708'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u516d\u6708'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u4e03\u6708'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u516b\u6708'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u4e5d\u6708'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u5341\u6708'</span><span class="PUNC">,</span><span class="STRN">'\u5341\u4e00\u6708'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u5341\u4e8c\u6708'</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 62</span> 
+<span class='line'> 63</span> </span><span class="COMM">/**
+<span class='line'> 64</span>  * An Array of abbreviated month names starting with Jan.
+<span class='line'> 65</span>  * 
+<span class='line'> 66</span>  * @example abbrMonthNames[0]
+<span class='line'> 67</span>  * @result 'Jan'
+<span class='line'> 68</span>  * 
+<span class='line'> 69</span>  * @name monthNames
+<span class='line'> 70</span>  * @type Array
+<span class='line'> 71</span>  * @cat Plugins/Methods/Date
+<span class='line'> 72</span>  */</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="COMM">//Date.abbrMonthNames = [ '一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一','十二' ];</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="NAME">Date.abbrMonthNames</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="STRN">'\u4e00'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u4e8c'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u4e09'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u56db'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u4e94'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u516d'</span><span class="WHIT"> </span><span class="PUNC">,</span><span class="STRN">'\u4e03'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u516b'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u4e5d'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u5341'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\u5341\u4e00'</span><span class="PUNC">,</span><span class="STRN">'\u5341\u4e8c'</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 75</span> 
+<span class='line'> 76</span> </span><span class="COMM">/**
+<span class='line'> 77</span>  * The first day of the week for this locale.
+<span class='line'> 78</span>  * 
+<span class='line'> 79</span>  * @name firstDayOfWeek
+<span class='line'> 80</span>  * @type Number
+<span class='line'> 81</span>  * @cat Plugins/Methods/Date
+<span class='line'> 82</span>  * @author Kelvin Luck
+<span class='line'> 83</span>  */</span><span class="WHIT">
+<span class='line'> 84</span> </span><span class="NAME">Date.firstDayOfWeek</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 85</span> 
+<span class='line'> 86</span> </span><span class="COMM">/**
+<span class='line'> 87</span>  * The format that string dates should be represented as (e.g. 'dd/mm/yyyy' for
+<span class='line'> 88</span>  * UK, 'mm/dd/yyyy' for US, 'yyyy-mm-dd' for Unicode etc).
+<span class='line'> 89</span>  * 
+<span class='line'> 90</span>  * @name format
+<span class='line'> 91</span>  * @type String
+<span class='line'> 92</span>  * @cat Plugins/Methods/Date
+<span class='line'> 93</span>  * @author Kelvin Luck
+<span class='line'> 94</span>  */</span><span class="WHIT">
+<span class='line'> 95</span> </span><span class="COMM">// Date.format = 'dd/mm/yyyy';</span><span class="WHIT">
+<span class='line'> 96</span> </span><span class="COMM">// Date.format = 'mm/dd/yyyy';</span><span class="WHIT">
+<span class='line'> 97</span> </span><span class="NAME">Date.format</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'yyyy-mm-dd'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 98</span> </span><span class="COMM">// Date.format = 'dd mmm yy';</span><span class="WHIT">
+<span class='line'> 99</span> 
+<span class='line'>100</span> </span><span class="COMM">/**
+<span class='line'>101</span>  * The first two numbers in the century to be used when decoding a two digit
+<span class='line'>102</span>  * year. Since a two digit year is ambiguous (and date.setYear only works with
+<span class='line'>103</span>  * numbers &lt; 99 and so doesn't allow you to set years after 2000) we need to use
+<span class='line'>104</span>  * this to disambiguate the two digit year codes.
+<span class='line'>105</span>  * 
+<span class='line'>106</span>  * @name format
+<span class='line'>107</span>  * @type String
+<span class='line'>108</span>  * @cat Plugins/Methods/Date
+<span class='line'>109</span>  * @author Kelvin Luck
+<span class='line'>110</span>  */</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="NAME">Date.fullYearStart</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'20'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>112</span> 
+<span class='line'>113</span> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>114</span> 
+<span class='line'>115</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>116</span> 	 * Adds a given method under the given name to the Date prototype if it
+<span class='line'>117</span> 	 * doesn't currently exist.
+<span class='line'>118</span> 	 * 
+<span class='line'>119</span> 	 * @private
+<span class='line'>120</span> 	 */</span><span class="WHIT">
+<span class='line'>121</span> </span><span class="WHIT">	</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">add</span><span class="PUNC">(</span><span class="NAME">name</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">method</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>122</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">Date.prototype</span><span class="PUNC">[</span><span class="NAME">name</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>123</span> </span><span class="WHIT">			</span><span class="NAME">Date.prototype</span><span class="PUNC">[</span><span class="NAME">name</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">method</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>124</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>125</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>126</span> </span><span class="WHIT">	</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>127</span> 
+<span class='line'>128</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>129</span> 	 * Checks if the year is a leap year.
+<span class='line'>130</span> 	 * 
+<span class='line'>131</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.isLeapYear();
+<span class='line'>132</span> 	 * @result true
+<span class='line'>133</span> 	 * 
+<span class='line'>134</span> 	 * @name isLeapYear
+<span class='line'>135</span> 	 * @type Boolean
+<span class='line'>136</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>137</span> 	 */</span><span class="WHIT">
+<span class='line'>138</span> </span><span class="WHIT">	</span><span class="NAME">add</span><span class="PUNC">(</span><span class="STRN">"isLeapYear"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>139</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">y</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.getFullYear</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>140</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">y</span><span class="WHIT"> </span><span class="PUNC">%</span><span class="WHIT"> </span><span class="NUMB">4</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">y</span><span class="WHIT"> </span><span class="PUNC">%</span><span class="WHIT"> </span><span class="NUMB">100</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">y</span><span class="WHIT"> </span><span class="PUNC">%</span><span class="WHIT"> </span><span class="NUMB">400</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>141</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>142</span> 
+<span class='line'>143</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>144</span> 	 * Checks if the day is a weekend day (Sat or Sun).
+<span class='line'>145</span> 	 * 
+<span class='line'>146</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.isWeekend();
+<span class='line'>147</span> 	 * @result false
+<span class='line'>148</span> 	 * 
+<span class='line'>149</span> 	 * @name isWeekend
+<span class='line'>150</span> 	 * @type Boolean
+<span class='line'>151</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>152</span> 	 */</span><span class="WHIT">
+<span class='line'>153</span> </span><span class="WHIT">	</span><span class="NAME">add</span><span class="PUNC">(</span><span class="STRN">"isWeekend"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>154</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.getDay</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">this.getDay</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NUMB">6</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>155</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>156</span> 
+<span class='line'>157</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>158</span> 	 * Check if the day is a day of the week (Mon-Fri)
+<span class='line'>159</span> 	 * 
+<span class='line'>160</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.isWeekDay();
+<span class='line'>161</span> 	 * @result false
+<span class='line'>162</span> 	 * 
+<span class='line'>163</span> 	 * @name isWeekDay
+<span class='line'>164</span> 	 * @type Boolean
+<span class='line'>165</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>166</span> 	 */</span><span class="WHIT">
+<span class='line'>167</span> </span><span class="WHIT">	</span><span class="NAME">add</span><span class="PUNC">(</span><span class="STRN">"isWeekDay"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>168</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">this.isWeekend</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>169</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>170</span> 
+<span class='line'>171</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>172</span> 	 * Gets the number of days in the month.
+<span class='line'>173</span> 	 * 
+<span class='line'>174</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.getDaysInMonth();
+<span class='line'>175</span> 	 * @result 31
+<span class='line'>176</span> 	 * 
+<span class='line'>177</span> 	 * @name getDaysInMonth
+<span class='line'>178</span> 	 * @type Number
+<span class='line'>179</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>180</span> 	 */</span><span class="WHIT">
+<span class='line'>181</span> </span><span class="WHIT">	</span><span class="NAME">add</span><span class="PUNC">(</span><span class="STRN">"getDaysInMonth"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>182</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NUMB">31</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.isLeapYear</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NUMB">29</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">28</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">31</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">30</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">31</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">30</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">31</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">31</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">30</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>183</span> </span><span class="WHIT">				</span><span class="NUMB">31</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">30</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">31</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">this.getMonth</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>184</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>185</span> 
+<span class='line'>186</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>187</span> 	 * Gets the name of the day.
+<span class='line'>188</span> 	 * 
+<span class='line'>189</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.getDayName();
+<span class='line'>190</span> 	 * @result 'Saturday'
+<span class='line'>191</span> 	 * 
+<span class='line'>192</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.getDayName(true);
+<span class='line'>193</span> 	 * @result 'Sat'
+<span class='line'>194</span> 	 * 
+<span class='line'>195</span> 	 * @param abbreviated
+<span class='line'>196</span> 	 *            Boolean When set to true the name will be abbreviated.
+<span class='line'>197</span> 	 * @name getDayName
+<span class='line'>198</span> 	 * @type String
+<span class='line'>199</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>200</span> 	 */</span><span class="WHIT">
+<span class='line'>201</span> </span><span class="WHIT">	</span><span class="NAME">add</span><span class="PUNC">(</span><span class="STRN">"getDayName"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">abbreviated</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>202</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">abbreviated</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">Date.abbrDayNames</span><span class="PUNC">[</span><span class="NAME">this.getDay</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">]</span><span class="WHIT">
+<span class='line'>203</span> </span><span class="WHIT">				</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">Date.dayNames</span><span class="PUNC">[</span><span class="NAME">this.getDay</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>204</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>205</span> 
+<span class='line'>206</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>207</span> 	 * Gets the name of the month.
+<span class='line'>208</span> 	 * 
+<span class='line'>209</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.getMonthName();
+<span class='line'>210</span> 	 * @result 'Janurary'
+<span class='line'>211</span> 	 * 
+<span class='line'>212</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.getMonthName(true);
+<span class='line'>213</span> 	 * @result 'Jan'
+<span class='line'>214</span> 	 * 
+<span class='line'>215</span> 	 * @param abbreviated
+<span class='line'>216</span> 	 *            Boolean When set to true the name will be abbreviated.
+<span class='line'>217</span> 	 * @name getDayName
+<span class='line'>218</span> 	 * @type String
+<span class='line'>219</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>220</span> 	 */</span><span class="WHIT">
+<span class='line'>221</span> </span><span class="WHIT">	</span><span class="NAME">add</span><span class="PUNC">(</span><span class="STRN">"getMonthName"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">abbreviated</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>222</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">abbreviated</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">Date.abbrMonthNames</span><span class="PUNC">[</span><span class="NAME">this.getMonth</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">]</span><span class="WHIT">
+<span class='line'>223</span> </span><span class="WHIT">				</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">Date.monthNames</span><span class="PUNC">[</span><span class="NAME">this.getMonth</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>224</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>225</span> 
+<span class='line'>226</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>227</span> 	 * Get the number of the day of the year.
+<span class='line'>228</span> 	 * 
+<span class='line'>229</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.getDayOfYear();
+<span class='line'>230</span> 	 * @result 11
+<span class='line'>231</span> 	 * 
+<span class='line'>232</span> 	 * @name getDayOfYear
+<span class='line'>233</span> 	 * @type Number
+<span class='line'>234</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>235</span> 	 */</span><span class="WHIT">
+<span class='line'>236</span> </span><span class="WHIT">	</span><span class="NAME">add</span><span class="PUNC">(</span><span class="STRN">"getDayOfYear"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>237</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">tmpdtm</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Date</span><span class="PUNC">(</span><span class="STRN">"1/1/"</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">this.getFullYear</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>238</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">Math.floor</span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">this.getTime</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">tmpdtm.getTime</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">86400000</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>239</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>240</span> 
+<span class='line'>241</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>242</span> 	 * Get the number of the week of the year.
+<span class='line'>243</span> 	 * 
+<span class='line'>244</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.getWeekOfYear();
+<span class='line'>245</span> 	 * @result 2
+<span class='line'>246</span> 	 * 
+<span class='line'>247</span> 	 * @name getWeekOfYear
+<span class='line'>248</span> 	 * @type Number
+<span class='line'>249</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>250</span> 	 */</span><span class="WHIT">
+<span class='line'>251</span> </span><span class="WHIT">	</span><span class="NAME">add</span><span class="PUNC">(</span><span class="STRN">"getWeekOfYear"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>252</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">Math.ceil</span><span class="PUNC">(</span><span class="NAME">this.getDayOfYear</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NUMB">7</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>253</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>254</span> 
+<span class='line'>255</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>256</span> 	 * Set the day of the year.
+<span class='line'>257</span> 	 * 
+<span class='line'>258</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.setDayOfYear(1);
+<span class='line'>259</span> 	 *          dtm.toString();
+<span class='line'>260</span> 	 * @result 'Tue Jan 01 2008 00:00:00'
+<span class='line'>261</span> 	 * 
+<span class='line'>262</span> 	 * @name setDayOfYear
+<span class='line'>263</span> 	 * @type Date
+<span class='line'>264</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>265</span> 	 */</span><span class="WHIT">
+<span class='line'>266</span> </span><span class="WHIT">	</span><span class="NAME">add</span><span class="PUNC">(</span><span class="STRN">"setDayOfYear"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">day</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>267</span> </span><span class="WHIT">		</span><span class="NAME">this.setMonth</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>268</span> </span><span class="WHIT">		</span><span class="NAME">this.setDate</span><span class="PUNC">(</span><span class="NAME">day</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>269</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>270</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>271</span> 
+<span class='line'>272</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>273</span> 	 * Add a number of years to the date object.
+<span class='line'>274</span> 	 * 
+<span class='line'>275</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.addYears(1);
+<span class='line'>276</span> 	 *          dtm.toString();
+<span class='line'>277</span> 	 * @result 'Mon Jan 12 2009 00:00:00'
+<span class='line'>278</span> 	 * 
+<span class='line'>279</span> 	 * @name addYears
+<span class='line'>280</span> 	 * @type Date
+<span class='line'>281</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>282</span> 	 */</span><span class="WHIT">
+<span class='line'>283</span> </span><span class="WHIT">	</span><span class="NAME">add</span><span class="PUNC">(</span><span class="STRN">"addYears"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">num</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>284</span> </span><span class="WHIT">		</span><span class="NAME">this.setFullYear</span><span class="PUNC">(</span><span class="NAME">this.getFullYear</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">num</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>285</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>286</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>287</span> 
+<span class='line'>288</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>289</span> 	 * Add a number of months to the date object.
+<span class='line'>290</span> 	 * 
+<span class='line'>291</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.addMonths(1);
+<span class='line'>292</span> 	 *          dtm.toString();
+<span class='line'>293</span> 	 * @result 'Tue Feb 12 2008 00:00:00'
+<span class='line'>294</span> 	 * 
+<span class='line'>295</span> 	 * @name addMonths
+<span class='line'>296</span> 	 * @type Date
+<span class='line'>297</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>298</span> 	 */</span><span class="WHIT">
+<span class='line'>299</span> </span><span class="WHIT">	</span><span class="NAME">add</span><span class="PUNC">(</span><span class="STRN">"addMonths"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">num</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>300</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">tmpdtm</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.getDate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>301</span> 
+<span class='line'>302</span> </span><span class="WHIT">		</span><span class="NAME">this.setMonth</span><span class="PUNC">(</span><span class="NAME">this.getMonth</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">num</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>303</span> 
+<span class='line'>304</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">tmpdtm</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NAME">this.getDate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>305</span> </span><span class="WHIT">			</span><span class="NAME">this.addDays</span><span class="PUNC">(</span><span class="PUNC">-</span><span class="NAME">this.getDate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>306</span> 
+<span class='line'>307</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>308</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>309</span> 
+<span class='line'>310</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>311</span> 	 * Add a number of days to the date object.
+<span class='line'>312</span> 	 * 
+<span class='line'>313</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.addDays(1);
+<span class='line'>314</span> 	 *          dtm.toString();
+<span class='line'>315</span> 	 * @result 'Sun Jan 13 2008 00:00:00'
+<span class='line'>316</span> 	 * 
+<span class='line'>317</span> 	 * @name addDays
+<span class='line'>318</span> 	 * @type Date
+<span class='line'>319</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>320</span> 	 */</span><span class="WHIT">
+<span class='line'>321</span> </span><span class="WHIT">	</span><span class="NAME">add</span><span class="PUNC">(</span><span class="STRN">"addDays"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">num</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>322</span> </span><span class="WHIT">		</span><span class="COMM">// this.setDate(this.getDate() + num);</span><span class="WHIT">
+<span class='line'>323</span> </span><span class="WHIT">		</span><span class="NAME">this.setTime</span><span class="PUNC">(</span><span class="NAME">this.getTime</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">num</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NUMB">86400000</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>324</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>325</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>326</span> 
+<span class='line'>327</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>328</span> 	 * Add a number of hours to the date object.
+<span class='line'>329</span> 	 * 
+<span class='line'>330</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.addHours(24);
+<span class='line'>331</span> 	 *          dtm.toString();
+<span class='line'>332</span> 	 * @result 'Sun Jan 13 2008 00:00:00'
+<span class='line'>333</span> 	 * 
+<span class='line'>334</span> 	 * @name addHours
+<span class='line'>335</span> 	 * @type Date
+<span class='line'>336</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>337</span> 	 */</span><span class="WHIT">
+<span class='line'>338</span> </span><span class="WHIT">	</span><span class="NAME">add</span><span class="PUNC">(</span><span class="STRN">"addHours"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">num</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>339</span> </span><span class="WHIT">		</span><span class="NAME">this.setHours</span><span class="PUNC">(</span><span class="NAME">this.getHours</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">num</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>340</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>341</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>342</span> 
+<span class='line'>343</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>344</span> 	 * Add a number of minutes to the date object.
+<span class='line'>345</span> 	 * 
+<span class='line'>346</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.addMinutes(60);
+<span class='line'>347</span> 	 *          dtm.toString();
+<span class='line'>348</span> 	 * @result 'Sat Jan 12 2008 01:00:00'
+<span class='line'>349</span> 	 * 
+<span class='line'>350</span> 	 * @name addMinutes
+<span class='line'>351</span> 	 * @type Date
+<span class='line'>352</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>353</span> 	 */</span><span class="WHIT">
+<span class='line'>354</span> </span><span class="WHIT">	</span><span class="NAME">add</span><span class="PUNC">(</span><span class="STRN">"addMinutes"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">num</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>355</span> </span><span class="WHIT">		</span><span class="NAME">this.setMinutes</span><span class="PUNC">(</span><span class="NAME">this.getMinutes</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">num</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>356</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>357</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>358</span> 
+<span class='line'>359</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>360</span> 	 * Add a number of seconds to the date object.
+<span class='line'>361</span> 	 * 
+<span class='line'>362</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.addSeconds(60);
+<span class='line'>363</span> 	 *          dtm.toString();
+<span class='line'>364</span> 	 * @result 'Sat Jan 12 2008 00:01:00'
+<span class='line'>365</span> 	 * 
+<span class='line'>366</span> 	 * @name addSeconds
+<span class='line'>367</span> 	 * @type Date
+<span class='line'>368</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>369</span> 	 */</span><span class="WHIT">
+<span class='line'>370</span> </span><span class="WHIT">	</span><span class="NAME">add</span><span class="PUNC">(</span><span class="STRN">"addSeconds"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">num</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>371</span> </span><span class="WHIT">		</span><span class="NAME">this.setSeconds</span><span class="PUNC">(</span><span class="NAME">this.getSeconds</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">num</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>372</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>373</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>374</span> 
+<span class='line'>375</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>376</span> 	 * Sets the time component of this Date to zero for cleaner, easier
+<span class='line'>377</span> 	 * comparison of dates where time is not relevant.
+<span class='line'>378</span> 	 * 
+<span class='line'>379</span> 	 * @example var dtm = new Date(); dtm.zeroTime(); dtm.toString();
+<span class='line'>380</span> 	 * @result 'Sat Jan 12 2008 00:01:00'
+<span class='line'>381</span> 	 * 
+<span class='line'>382</span> 	 * @name zeroTime
+<span class='line'>383</span> 	 * @type Date
+<span class='line'>384</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>385</span> 	 * @author Kelvin Luck
+<span class='line'>386</span> 	 */</span><span class="WHIT">
+<span class='line'>387</span> </span><span class="WHIT">	</span><span class="NAME">add</span><span class="PUNC">(</span><span class="STRN">"zeroTime"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>388</span> </span><span class="WHIT">		</span><span class="NAME">this.setMilliseconds</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>389</span> </span><span class="WHIT">		</span><span class="NAME">this.setSeconds</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>390</span> </span><span class="WHIT">		</span><span class="NAME">this.setMinutes</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>391</span> </span><span class="WHIT">		</span><span class="NAME">this.setHours</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>392</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>393</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>394</span> 
+<span class='line'>395</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>396</span> 	 * Returns a string representation of the date object according to
+<span class='line'>397</span> 	 * Date.format. (Date.toString may be used in other places so I purposefully
+<span class='line'>398</span> 	 * didn't overwrite it)
+<span class='line'>399</span> 	 * 
+<span class='line'>400</span> 	 * @example var dtm = new Date("01/12/2008"); dtm.asString();
+<span class='line'>401</span> 	 * @result '12/01/2008' // (where Date.format == 'dd/mm/yyyy'
+<span class='line'>402</span> 	 * 
+<span class='line'>403</span> 	 * @name asString
+<span class='line'>404</span> 	 * @type Date
+<span class='line'>405</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>406</span> 	 * @author Kelvin Luck
+<span class='line'>407</span> 	 */</span><span class="WHIT">
+<span class='line'>408</span> </span><span class="WHIT">	</span><span class="NAME">add</span><span class="PUNC">(</span><span class="STRN">"asString"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">format</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>409</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">r</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">format</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">Date.format</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>410</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">r.split</span><span class="PUNC">(</span><span class="STRN">'yyyy'</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">join</span><span class="PUNC">(</span><span class="NAME">this.getFullYear</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">split</span><span class="PUNC">(</span><span class="STRN">'yy'</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">join</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>411</span> </span><span class="WHIT">				</span><span class="PUNC">(</span><span class="NAME">this.getFullYear</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">substring</span><span class="PUNC">(</span><span class="NUMB">2</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">split</span><span class="PUNC">(</span><span class="STRN">'mmmm'</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">join</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>412</span> </span><span class="WHIT">				</span><span class="NAME">this.getMonthName</span><span class="PUNC">(</span><span class="KEYW">false</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">split</span><span class="PUNC">(</span><span class="STRN">'mmm'</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">join</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>413</span> </span><span class="WHIT">				</span><span class="NAME">this.getMonthName</span><span class="PUNC">(</span><span class="KEYW">true</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">split</span><span class="PUNC">(</span><span class="STRN">'mm'</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">join</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>414</span> </span><span class="WHIT">				</span><span class="NAME">_zeroPad</span><span class="PUNC">(</span><span class="NAME">this.getMonth</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">split</span><span class="PUNC">(</span><span class="STRN">'dd'</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">join</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>415</span> </span><span class="WHIT">				</span><span class="NAME">_zeroPad</span><span class="PUNC">(</span><span class="NAME">this.getDate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">split</span><span class="PUNC">(</span><span class="STRN">'hh'</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">join</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>416</span> </span><span class="WHIT">				</span><span class="NAME">_zeroPad</span><span class="PUNC">(</span><span class="NAME">this.getHours</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">split</span><span class="PUNC">(</span><span class="STRN">'min'</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">join</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>417</span> </span><span class="WHIT">				</span><span class="NAME">_zeroPad</span><span class="PUNC">(</span><span class="NAME">this.getMinutes</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">split</span><span class="PUNC">(</span><span class="STRN">'ss'</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">join</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>418</span> </span><span class="WHIT">				</span><span class="NAME">_zeroPad</span><span class="PUNC">(</span><span class="NAME">this.getSeconds</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>419</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>420</span> 
+<span class='line'>421</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>422</span> 	 * Returns a new date object created from the passed String according to
+<span class='line'>423</span> 	 * Date.format or false if the attempt to do this results in an invalid date
+<span class='line'>424</span> 	 * object (We can't simple use Date.parse as it's not aware of locale and I
+<span class='line'>425</span> 	 * chose not to overwrite it incase it's functionality is being relied on
+<span class='line'>426</span> 	 * elsewhere)
+<span class='line'>427</span> 	 * 
+<span class='line'>428</span> 	 * @example var dtm = Date.fromString("12/01/2008"); dtm.toString();
+<span class='line'>429</span> 	 * @result 'Sat Jan 12 2008 00:00:00' // (where Date.format == 'dd/mm/yyyy'
+<span class='line'>430</span> 	 * 
+<span class='line'>431</span> 	 * @name fromString
+<span class='line'>432</span> 	 * @type Date
+<span class='line'>433</span> 	 * @cat Plugins/Methods/Date
+<span class='line'>434</span> 	 * @author Kelvin Luck
+<span class='line'>435</span> 	 */</span><span class="WHIT">
+<span class='line'>436</span> </span><span class="WHIT">	</span><span class="NAME">Date.fromString</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">s</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">format</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>437</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">f</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">format</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">Date.format</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>438</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">d</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Date</span><span class="PUNC">(</span><span class="STRN">'01/01/1977'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>439</span> 
+<span class='line'>440</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">mLength</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>441</span> 
+<span class='line'>442</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">iM</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">f.indexOf</span><span class="PUNC">(</span><span class="STRN">'mmmm'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>443</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">iM</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>444</span> </span><span class="WHIT">			</span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">Date.monthNames.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>445</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">mStr</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">s.substr</span><span class="PUNC">(</span><span class="NAME">iM</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">Date.monthNames</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">length</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>446</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">Date.monthNames</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">mStr</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>447</span> </span><span class="WHIT">					</span><span class="NAME">mLength</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Date.monthNames</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">length</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">4</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>448</span> </span><span class="WHIT">					</span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>449</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>450</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>451</span> </span><span class="WHIT">			</span><span class="NAME">d.setMonth</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>452</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>453</span> </span><span class="WHIT">			</span><span class="NAME">iM</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">f.indexOf</span><span class="PUNC">(</span><span class="STRN">'mmm'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>454</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">iM</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>455</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">mStr</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">s.substr</span><span class="PUNC">(</span><span class="NAME">iM</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>456</span> </span><span class="WHIT">				</span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">Date.abbrMonthNames.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>457</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">Date.abbrMonthNames</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">mStr</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>458</span> </span><span class="WHIT">						</span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>459</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>460</span> </span><span class="WHIT">				</span><span class="NAME">d.setMonth</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>461</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>462</span> </span><span class="WHIT">				</span><span class="NAME">d.setMonth</span><span class="PUNC">(</span><span class="NAME">Number</span><span class="PUNC">(</span><span class="NAME">s.substr</span><span class="PUNC">(</span><span class="NAME">f.indexOf</span><span class="PUNC">(</span><span class="STRN">'mm'</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>463</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>464</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>465</span> 
+<span class='line'>466</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">iY</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">f.indexOf</span><span class="PUNC">(</span><span class="STRN">'yyyy'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>467</span> 
+<span class='line'>468</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">iY</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>469</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">iM</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">iY</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>470</span> </span><span class="WHIT">				</span><span class="NAME">iY</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">mLength</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>471</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>472</span> </span><span class="WHIT">			</span><span class="NAME">d.setFullYear</span><span class="PUNC">(</span><span class="NAME">Number</span><span class="PUNC">(</span><span class="NAME">s.substr</span><span class="PUNC">(</span><span class="NAME">iY</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">4</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>473</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>474</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">iM</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">iY</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>475</span> </span><span class="WHIT">				</span><span class="NAME">iY</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">mLength</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>476</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>477</span> </span><span class="WHIT">			</span><span class="COMM">// TODO - this doesn't work very well - are there any rules for what</span><span class="WHIT">
+<span class='line'>478</span> </span><span class="WHIT">			</span><span class="COMM">// is meant by a two digit year?</span><span class="WHIT">
+<span class='line'>479</span> </span><span class="WHIT">			</span><span class="NAME">d.setFullYear</span><span class="PUNC">(</span><span class="NAME">Number</span><span class="PUNC">(</span><span class="NAME">Date.fullYearStart</span><span class="WHIT">
+<span class='line'>480</span> </span><span class="WHIT">					</span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">s.substr</span><span class="PUNC">(</span><span class="NAME">f.indexOf</span><span class="PUNC">(</span><span class="STRN">'yy'</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>481</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>482</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">iD</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">f.indexOf</span><span class="PUNC">(</span><span class="STRN">'dd'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>483</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">iM</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">iD</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>484</span> </span><span class="WHIT">			</span><span class="NAME">iD</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">mLength</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>485</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>486</span> </span><span class="WHIT">		</span><span class="NAME">d.setDate</span><span class="PUNC">(</span><span class="NAME">Number</span><span class="PUNC">(</span><span class="NAME">s.substr</span><span class="PUNC">(</span><span class="NAME">iD</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>487</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">isNaN</span><span class="PUNC">(</span><span class="NAME">d.getTime</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>488</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>489</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>490</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">d</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>491</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>492</span> 
+<span class='line'>493</span> </span><span class="WHIT">	</span><span class="COMM">// utility method</span><span class="WHIT">
+<span class='line'>494</span> </span><span class="WHIT">	</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_zeroPad</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">num</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>495</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">s</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'0'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">num</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>496</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">s.substring</span><span class="PUNC">(</span><span class="NAME">s.length</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>497</span> </span><span class="WHIT">		</span><span class="COMM">// return ('0'+num).substring(-2); // doesn't work on IE :(</span><span class="WHIT">
+<span class='line'>498</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>499</span> 
+<span class='line'>500</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>501</span> </span></pre></body></html>

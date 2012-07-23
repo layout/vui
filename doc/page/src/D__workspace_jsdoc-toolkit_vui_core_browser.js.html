@@ -1,0 +1,88 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/**
+<span class='line'>  2</span>  * fileoverview浏览器检测
+<span class='line'>  3</span>  * @constructor
+<span class='line'>  4</span>  * @name vui.browser
+<span class='line'>  5</span>  * @author putaoshu@126.com
+<span class='line'>  6</span>  * @date 2012-02-08
+<span class='line'>  7</span>  * @example 
+<span class='line'>  8</span> vui.browser.ie
+<span class='line'>  9</span> vui.browser.firefox
+<span class='line'> 10</span>  * @note
+<span class='line'> 11</span>  * ff3.6.20 mozilla/5.0 (windows; u; windows nt 6.1; zh-cn; rv:1.9.2.20) gecko/20110803 firefox/3.6.20 
+<span class='line'> 12</span> 	chrome16.0 mozilla/5.0 (windows nt 6.1) applewebkit/535.7 (khtml, like gecko) chrome/16.0.912.63 safari/535.7 
+<span class='line'> 13</span> 	safari5.04 mozilla/5.0 (windows nt 6.1) applewebkit/534.51.22 (khtml, like gecko) version/5.0.4 safari/533.20.27 
+<span class='line'> 14</span> 	opear11.6 opera/9.80 (windows nt 6.1; u; zh-cn) presto/2.10.229 version/11.61 
+<span class='line'> 15</span>  */</span><span class="WHIT">
+<span class='line'> 16</span> 
+<span class='line'> 17</span> </span><span class="COMM">/** @lends vui.browser */</span><span class="WHIT">
+<span class='line'> 18</span> </span><span class="NAME">vui.browser</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 19</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 20</span> 	 * 浏览器UA 
+<span class='line'> 21</span> 	 * @name vui.browser.ua
+<span class='line'> 22</span> 	 * @return {String} 浏览器UA
+<span class='line'> 23</span> 	 */</span><span class="WHIT">
+<span class='line'> 24</span> </span><span class="WHIT">	</span><span class="NAME">ua</span><span class="PUNC">:</span><span class="NAME">navigator.userAgent.toLowerCase</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 25</span> 
+<span class='line'> 26</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 27</span> 	 * ie 
+<span class='line'> 28</span> 	 * @name vui.browser.ie
+<span class='line'> 29</span> 	 * @return {Boolean} true/false
+<span class='line'> 30</span> 	 */</span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="WHIT">	</span><span class="NAME">ie</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="REGX">/msie/</span><span class="PUNC">.</span><span class="NAME">test</span><span class="PUNC">(</span><span class="NAME">navigator.userAgent.toLowerCase</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 33</span> 	 * ie6 
+<span class='line'> 34</span> 	 * @name vui.browser.ie6
+<span class='line'> 35</span> 	 * @return {Boolean} true/false
+<span class='line'> 36</span> 	 */</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">	</span><span class="NAME">ie6</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="REGX">/msie 6/</span><span class="PUNC">.</span><span class="NAME">test</span><span class="PUNC">(</span><span class="NAME">navigator.userAgent.toLowerCase</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 39</span> 	 * ie7
+<span class='line'> 40</span> 	 * @name vui.browser.ie7
+<span class='line'> 41</span> 	 * @return {Boolean} true/false
+<span class='line'> 42</span> 	 */</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="WHIT">	</span><span class="NAME">ie7</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="REGX">/msie 7/</span><span class="PUNC">.</span><span class="NAME">test</span><span class="PUNC">(</span><span class="NAME">navigator.userAgent.toLowerCase</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 44</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 45</span> 	 * ie8 
+<span class='line'> 46</span> 	 * @name vui.browser.ie8
+<span class='line'> 47</span> 	 * @return {Boolean} true/false
+<span class='line'> 48</span> 	 */</span><span class="WHIT">
+<span class='line'> 49</span> </span><span class="WHIT">	</span><span class="NAME">ie8</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="REGX">/msie 8/</span><span class="PUNC">.</span><span class="NAME">test</span><span class="PUNC">(</span><span class="NAME">navigator.userAgent.toLowerCase</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 50</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 51</span> 	 * ie9 
+<span class='line'> 52</span> 	 * @name vui.browser.ie9
+<span class='line'> 53</span> 	 * @return {Boolean} true/false
+<span class='line'> 54</span> 	 */</span><span class="WHIT">
+<span class='line'> 55</span> </span><span class="WHIT">	</span><span class="NAME">ie9</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="REGX">/msie 9/</span><span class="PUNC">.</span><span class="NAME">test</span><span class="PUNC">(</span><span class="NAME">navigator.userAgent.toLowerCase</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 56</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 57</span> 	 * firefox 
+<span class='line'> 58</span> 	 * @name vui.browser.firefox
+<span class='line'> 59</span> 	 * @return {Boolean} true/false
+<span class='line'> 60</span> 	 */</span><span class="WHIT">
+<span class='line'> 61</span> </span><span class="WHIT">	</span><span class="NAME">firefox</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="REGX">/firefox\/(\d+\.\d+)/i</span><span class="PUNC">.</span><span class="NAME">test</span><span class="PUNC">(</span><span class="NAME">navigator.userAgent.toLowerCase</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 62</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 63</span> 	 * chrome 
+<span class='line'> 64</span> 	 * @name vui.browser.chrome
+<span class='line'> 65</span> 	 * @return {Boolean} true/false
+<span class='line'> 66</span> 	 */</span><span class="WHIT">
+<span class='line'> 67</span> </span><span class="WHIT">	</span><span class="NAME">chrome</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="REGX">/chrome\/(\d+\.\d+)/i</span><span class="PUNC">.</span><span class="NAME">test</span><span class="PUNC">(</span><span class="NAME">navigator.userAgent.toLowerCase</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 68</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 69</span> 	 * opera 
+<span class='line'> 70</span> 	 * @name vui.browser.opera
+<span class='line'> 71</span> 	 * @return {Boolean} true/false
+<span class='line'> 72</span> 	 */</span><span class="WHIT">	</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="WHIT">	</span><span class="NAME">opera</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="REGX">/opera/</span><span class="PUNC">.</span><span class="NAME">test</span><span class="PUNC">(</span><span class="NAME">navigator.userAgent.toLowerCase</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">	</span><span class="COMM">//safari: /safari/.test(navigator.userAgent.toLowerCase()),</span><span class="WHIT">
+<span class='line'> 75</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 76</span> 	 * webkit 
+<span class='line'> 77</span> 	 * @name vui.browser.webkit
+<span class='line'> 78</span> 	 * @return {Boolean} true/false
+<span class='line'> 79</span> 	 */</span><span class="WHIT">
+<span class='line'> 80</span> </span><span class="WHIT">	</span><span class="NAME">webkit</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="REGX">/webkit/</span><span class="PUNC">.</span><span class="NAME">test</span><span class="PUNC">(</span><span class="NAME">navigator.userAgent.toLowerCase</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 81</span> </span><span class="PUNC">}</span></pre></body></html>
