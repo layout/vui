@@ -1,4 +1,5 @@
 <h1>vui</h1>
+<p><a href="http://putaoshu.github.com/vui/" target="_blank">在线文档地址</p>
 <p>===============</p>
 <p>vui library含有js和css两部分. 另外工具包括js代码的压缩合并(基于yuicompressor),css代码的压缩合并(基于yuicompressor),js的文档生成(基于jsdoc)</p>
 
