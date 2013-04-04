@@ -4,7 +4,7 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="generator" content="JsDoc Toolkit" />
 
-<title>vui.stick - undefined</title>
+<title>vui.guid - undefined</title>
 <link rel="stylesheet" href="../default.css"/>
 </head><body>
 
@@ -154,7 +154,7 @@
 <div id="summary">
     <!-- Class Name -->
      
-	<b><a href="../page/vui.stick.html#constructor">vui.stick</a></b> 
+	<b><a href="../page/vui.guid.html#constructor">vui.guid</a></b> 
 	
     <!-- Properties -->
     
@@ -170,11 +170,11 @@
 <!-- /summary -->
 
 <!--  Class Detail -->
-<h1 id="stick"><a href="#stick">Class: stick</a></h1>
+<h1 id="guid"><a href="#guid">Class: guid</a></h1>
 
 <!-- Description -->
 <h2>
-	stick
+	返回一个当前页面的唯一标识字符串
     
 </h2>
 <!-- Extra info: author, since, source, etc... -->
@@ -183,7 +183,7 @@
         <div class="author">Author: putaoshu@126.com.</div>
     
     
-        <div>View source: <a href="../page/src/D__workDoc_vui_js_stick.js.html">stick.js</a>.</div>
+        <div>View source: <a href="../page/src/D__workDoc_vui_js_guid.js.html">guid.js</a>.</div>
     
     
 </div>
@@ -192,117 +192,25 @@
 
 <!-- Arguments -->
 
-    <h3>Arguments: </h3>
-	
-	<!-- Arguments detail -->
-	<p class="detail">
-	
-	<strong>vui.stick</strong>
-	(options)
-	</p>
-
-    <ol>
-        
-            <li> 
-				options 
-				- (<em>Object</em>)
-				
-               组件配置 
-            </li>
-        
-            <li> 
-				options.obj 
-				- (<em>Object</em>)
-				
-               null 粘到那个元素上 
-            </li>
-        
-            <li> 
-				options.stickTo 
-				- (<em>Object</em>)
-				
-               null 被粘的对象 
-            </li>
-        
-            <li> 
-				options.resize 
-				- (<em>Boolean</em>)
-				
-               true 窗口有变更自动更新 
-            </li>
-        
-            <li> 
-				options.autoShow 
-				- (<em>Boolean</em>)
-				
-               false 主体元素有被遮挡时,把主体转移到上面 
-            </li>
-        
-            <li> 
-				options.css 
-				- (<em>Object</em>)
-				
-                
-            </li>
-        
-            <li> 
-				options.css.type 
-				- (<em>Number</em>)
-				
-               0 输入偏移量,1为默认输入 
-            </li>
-        
-            <li> 
-				options.css.position 
-				- (<em>String</em>)
-				
-               'absolute' position 
-            </li>
-        
-            <li> 
-				options.css.top 
-				- (<em>Number</em>)
-				
-               0 向上的偏移量 
-            </li>
-        
-            <li> 
-				options.css.left 
-				- (<em>Number</em>)
-				
-               0 向左的偏移量 
-            </li>
-        
-            <li> 
-				options.css.zIndex 
-				- (<em>Number</em>)
-				
-               2 zIndex 
-            </li>
-        
-    </ol>
-
 <!-- Options -->
 
 <!-- Binds -->
 
 <!-- Returns -->
 
+    <h3>Returns</h3>
+    <ul>
+        
+            <li> String
+                当前页面的唯一标识字符串 </li>
+        
+    </ul>
+
 <!-- Example -->
 
 	<h3>Example: </h3>
     
-        <pre class="code example" id="example">
-vui.stick({
-	stick:$('#more'),
-	stickTo:$('#moreOperateLayer'),
-	autoShow:true,
-	css:{
-		top:3,
-		left:0,
-		zIndex:20
-	}
-});</pre>
+        <pre class="code example" id="example">vui.guid(); //返回vui_2</pre>
     
 
 <!-- Requires -->

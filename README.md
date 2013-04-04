@@ -2,6 +2,10 @@
 <p>===============</p>
 <p>vui library含有js和css两部分. 另外工具包括js代码的压缩合并(基于yuicompressor),css代码的压缩合并(基于yuicompressor),js的文档生成(基于jsdoc)</p>
 
+<h2>更新</h2>
+<p>2013-4-4</p>
+<p>js增加vui.guid() 返回一个当前页面的唯一标识字符串 , vui.format() 对目标字符串进行格式化</p>
+
 <h2>js</h2>
 <p>基于jquery</p>
 <p>组件包括vui.dialog, vui.drag, vui.fixed, vui.isScroll, vui.contextmenu, vui.hotkey, vui.menu, vui.stick等等</p>
