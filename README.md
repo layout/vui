@@ -5,7 +5,7 @@
 
 <h2>更新</h2>
 <p>2013-4-22</p>
-<p>js增加clone.js 深度复制 , htmlFilter.js html转义, quote.js 引号转义, substr.js 截取字符串, throttle.js 节流函数 </p>
+<p>js增加clone.js 深度复制 , htmlFilter.js html转义, quote.js 引号转义, substr.js 截取字符串, throttle.js 节流函数</p>
 
 <p>2013-4-4</p>
 <p>js增加vui.guid() 返回一个当前页面的唯一标识字符串 , vui.format() 对目标字符串进行格式化</p>
