@@ -179,6 +179,19 @@ vui.clickhide = vui.clickHide = function(obj){
 }
 
 /**
+ * 深度copy
+ * @param {Function} obj 要copy的函数
+ */
+vui.clone = function(obj) {
+	if(typeof(obj) != 'object' || obj == null){
+		return obj;
+	}
+	var new_obj = new Object();
+	for(var i in obj){
+		new_obj[i] = kui.clone(obj[i]);
+	}
+	return new_obj;
+}/**
  * 右键菜单
  * @constructor
  * @author putaoshu@126.com
@@ -1059,6 +1072,32 @@ vui.unhotkey = function(hotkeyName){
 }
 
 /**
+ * html转义
+ * @param {String} content
+ * @param {Mixed} type 引号转义方式
+ *  过滤掉全部html标签(默认)
+ * 	1: 转义单引号&html标签
+ *  2: 转义双引号&html标签
+ *  3: 转义单双引号&html标签
+ */
+vui.HTMLFilter=function(content,type){
+	if (typeof type == 'undefined'){
+		content = content.replace(/<\/?[^>]*>/g,''); //去除HTML tag
+		content.value = content.replace(/[ | ]*\n/g,'\n'); //去除行尾空白
+		//content = content.replace(/\n[\s| | ]*\r/g,'\n'); //去除多余空行
+	}
+
+	if(type == 1 || type == 3){
+		//单引号
+		content = content.replace(/'/g, '&#039;');
+	}
+	if(type == 2 || type == 3){
+		//多引号
+		content = content.replace(/&/g, "&amp;").replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		content = content.replace(/"/g, '&quot');
+	}
+	return content;
+}/**
  * 输入框光标位置相关处理
  * @constructor
  * @name vui.inputCursor
@@ -1763,6 +1802,25 @@ vui.preventScroll={
 }
 
 /**
+ * 转义引号
+ * @param {String} content
+ * @param {Mixed} quota_style 引号转义方式
+ * 	1: SINGLE <a href='qq'>q</a> --> <a href=\'qq\'>q</a>
+ *  2: DOUBLE(默认) <a href="qq">q</a> --> <a href=\"qq\">q</a>
+ */
+vui.quote = function(content, quote_style){
+	if(typeof quote_style == 'undefined'){
+		quote_style = 2;
+	}
+	//单引号
+	if(quote_style == 1){
+		content = content.replace(/'/g, '\\\'');
+	}
+	else if(quote_style == 2){
+		content = content.replace(/"/g, '\\"');
+	}
+	return content;
+}/**
  * 选中文字
  * @constructor
  * @author putaoshu@126.com
@@ -1915,3 +1973,75 @@ vui.stick = function(options) {
 	}
 }
 
+/**
+ * 截取字符串(默认为10个字符)
+ * @param string str 传入的字符
+ * @param int len 截取长度(单位为汉字，即2个字符)
+ * @param boolean hasDot 是否加上...
+ * @return string
+ */
+
+vui.substr=function(str, len, hasDot){ 
+	if (str==null) return;
+	if(typeof len=='undefined') len=10;
+	len*=2;
+	if(typeof hasDot=='undefined') hasDot=true;
+	var newLength = 0; 
+	var newStr = ""; 
+	var chineseRegex = /[^\x00-\xff]/g;
+	var singleChar = ""; 
+	var strLength = str.replace(chineseRegex,"**").length; 
+	for(var i = 0;i < strLength;i++) { 
+		singleChar = str.charAt(i).toString(); 
+		if(singleChar.match(chineseRegex) != null){ 
+			newLength += 2; 
+		}else{ 
+			newLength++; 
+		} 
+		if(newLength > len){ 
+			break; 
+		}
+		newStr += singleChar; 
+	} 
+	 
+	if(hasDot && strLength > len){ 
+		newStr += "..."; 
+	} 
+	return newStr; 
+}/**
+ * 节流函数
+ * @form https://github.com/documentcloud/underscore/blob/master/underscore.js
+ * @param {Function} func 要节流的函数
+ * @param {Number} wait 延时时间
+ * @example 
+	var main= function(){
+		//todo
+	};
+	var throttled = throttle(main,200);
+	$(window).on('scroll',throttled);
+ */
+
+vui.throttle = function(func, wait) {
+	var context, args, timeout, result;
+    var previous = 0;
+    var later = function() {
+      previous = new Date;
+      timeout = null;
+      result = func.apply(context, args);
+    };
+    return function() {
+      var now = new Date;
+      var remaining = wait - (now - previous);
+      context = this;
+      args = arguments;
+      if (remaining <= 0) {
+        clearTimeout(timeout);
+        timeout = null;
+        previous = now;
+        result = func.apply(context, args);
+      } else if (!timeout) {
+        timeout = setTimeout(later, remaining);
+      }
+      return result;
+    };
+}
