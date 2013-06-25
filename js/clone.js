@@ -8,7 +8,7 @@ vui.clone = function(obj) {
 	}
 	var new_obj = new Object();
 	for(var i in obj){
-		new_obj[i] = kui.clone(obj[i]);
+		new_obj[i] = vui.clone(obj[i]);
 	}
 	return new_obj;
 }
